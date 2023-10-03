@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:interesting_places/core/themes/app_colors.dart';
 
 @RoutePage()
 class CategoryScreen extends StatelessWidget {
@@ -12,16 +13,16 @@ class CategoryScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Новое место',
+          'Категория',
           style: textTheme.headlineSmall,
         ),
-        leadingWidth: 80,
-        leading: TextButton(
-          child: Text(
-            'Отмена',
-            style: textTheme.displayMedium,
+        leading: IconButton(
+          onPressed: () => context.router.pop(),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.black,
+            size: 24,
           ),
-          onPressed: () {},
         ),
       ),
       body: const Column(
@@ -30,25 +31,3 @@ class CategoryScreen extends StatelessWidget {
     );
   }
 }
-
-/* class CategoryItem extends StatelessWidget {
-  final String text;
-
-  const CategoryItem({super.key, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: AppColors.lightestGrey),
-          )
-        ),
-        child: Text(text),
-      ),
-    );
-  }
-}
- */
