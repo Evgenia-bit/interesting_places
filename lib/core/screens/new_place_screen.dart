@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:interesting_places/features/create_new_place/presentation/widgets/create_new_place_form.dart';
+import 'package:interesting_places/features/create_new_place/presentation/widgets/new_place_form.dart';
 
 @RoutePage()
 class NewPlaceScreen extends StatelessWidget {
@@ -25,7 +25,7 @@ class NewPlaceScreen extends StatelessWidget {
           onPressed: () {},
         ),
       ),
-      body: const CreateNewPlaceForm(),
+      body: const NewPlaceForm(),
     );
   }
 }

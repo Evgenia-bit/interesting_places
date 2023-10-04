@@ -2,16 +2,29 @@ part of 'image_bloc.dart';
 
 @immutable
 class ImageState {
-  final List<String> fileNameList;
+  final String? addedImageFileName;
+  final ImageStatus status;
   const ImageState({
-    this.fileNameList = const [],
+    this.addedImageFileName,
+    required this.status,
   });
 
   ImageState copyWith({
-    List<String>? fileNameList,
+    String? addedImageFileName,
+    ImageStatus? status,
   }) {
     return ImageState(
-      fileNameList: fileNameList ?? this.fileNameList,
+      addedImageFileName: addedImageFileName ?? this.addedImageFileName,
+      status: status ?? this.status,
     );
   }
 }
+
+@immutable
+sealed class ImageStatus {}
+
+class None extends ImageStatus {}
+
+class Added extends ImageStatus {}
+
+class Deleted extends ImageStatus {}

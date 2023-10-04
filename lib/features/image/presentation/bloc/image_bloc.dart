@@ -7,7 +7,7 @@ import 'package:interesting_places/features/image/domain/repository/image_reposi
 part 'image_event.dart';
 part 'image_state.dart';
 
-const _initialState = ImageState();
+final _initialState = ImageState(status: None());
 
 class ImageBloc extends Bloc<ImageEvent, ImageState> {
   ImageBloc({
@@ -30,7 +30,8 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
     final image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       final fileName = await _repository.saveImage(image);
-      emit(state.copyWith(fileNameList: [...state.fileNameList, fileName]));
+      emit(state.copyWith(status: Added(), addedImageFileName: fileName));
+      emit(state.copyWith(status: None()));
     }
   }
 
@@ -39,8 +40,7 @@ class ImageBloc extends Bloc<ImageEvent, ImageState> {
     Emitter<ImageState> emit,
   ) async {
     await _repository.deleteImage(event.fileName);
-    final fileNameList = state.fileNameList;
-    fileNameList.remove(event.fileName);
-    emit(state.copyWith(fileNameList: fileNameList));
+    emit(state.copyWith(status: Deleted()));
+    emit(state.copyWith(status: None()));
   }
 }
