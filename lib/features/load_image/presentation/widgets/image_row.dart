@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:interesting_places/features/add_image/presentation/widgets/add_image_button.dart';
-import 'package:interesting_places/features/add_image/presentation/widgets/image_row_item.dart';
+import 'package:interesting_places/features/load_image/presentation/widgets/add_image_button.dart';
+import 'package:interesting_places/features/load_image/presentation/widgets/image_row_item.dart';
 
 class ImageRow extends StatelessWidget {
   const ImageRow({super.key});
