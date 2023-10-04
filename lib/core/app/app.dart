@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:interesting_places/core/routes/router.dart';
 import 'package:interesting_places/core/themes/theme.dart';
+import 'package:interesting_places/features/image/image_module.dart';
+import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
   final _appRouter = AppRouter();
@@ -9,9 +11,14 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      theme: theme,
-      routerConfig: _appRouter.config(),
+    return MultiProvider(
+      providers: const [
+        ImageModule(),
+      ],
+      child: MaterialApp.router(
+        theme: theme,
+        routerConfig: _appRouter.config(),
+      ),
     );
   }
 }
