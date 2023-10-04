@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
+import 'package:interesting_places/core/widgets/app_button.dart';
 import 'package:interesting_places/features/create_new_place/presentation/widgets/choose_category_button.dart.dart';
 import 'package:interesting_places/features/image/presentation/widgets/image_row.dart';
 
@@ -14,48 +15,47 @@ class CreateNewPlaceForm extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         const SliverToBoxAdapter(child: ImageRow()),
-         SliverFillRemaining(
-            hasScrollBody: false,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Категория'.toUpperCase(),
-                    style: textTheme.labelSmall,
-                  ),
-                  const ChooseCategoryButton(),
-                  const SizedBox(height: 24),
-                  Text(
-                    'Название'.toUpperCase(),
-                    style: textTheme.labelSmall,
-                  ),
-                  const SizedBox(height: 12),
-                  const _Field(
-                    borderColor: AppColors.green,
-                  ),
-                  const SizedBox(height: 24),
-                  const _CoordinatesRow(),
-                  const _MapButton(),
-                  const SizedBox(height: 24),
-                  Text(
-                    'Описание'.toUpperCase(),
-                    style: textTheme.labelSmall,
-                  ),
-                  const SizedBox(height: 12),
-                  const _Field(
-                    maxLines: 3,
-                    borderColor: AppColors.lightGrey,
-                  ),
-                  const Spacer(),
-                  const _CreateButton()
-                ],
-              ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Категория'.toUpperCase(),
+                  style: textTheme.labelSmall,
+                ),
+                const ChooseCategoryButton(),
+                const SizedBox(height: 24),
+                Text(
+                  'Название'.toUpperCase(),
+                  style: textTheme.labelSmall,
+                ),
+                const SizedBox(height: 12),
+                const _Field(
+                  borderColor: AppColors.green,
+                ),
+                const SizedBox(height: 24),
+                const _CoordinatesRow(),
+                const _MapButton(),
+                const SizedBox(height: 24),
+                Text(
+                  'Описание'.toUpperCase(),
+                  style: textTheme.labelSmall,
+                ),
+                const SizedBox(height: 12),
+                const _Field(
+                  maxLines: 3,
+                  borderColor: AppColors.lightGrey,
+                ),
+                const Spacer(),
+                const AppButton(text: 'Создать'),
+              ],
             ),
           ),
-        
+        ),
       ],
     );
   }
@@ -160,36 +160,6 @@ class _Field extends StatelessWidget {
           borderSide: BorderSide(
             color: borderColor,
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CreateButton extends StatelessWidget {
-  const _CreateButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: TextButton(
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          ),
-          backgroundColor:
-              const MaterialStatePropertyAll(AppColors.lightestGrey),
-          padding: const MaterialStatePropertyAll(
-            EdgeInsets.symmetric(vertical: 15),
-          ),
-        ),
-        onPressed: () {},
-        child: Text(
-          'Создать'.toUpperCase(),
-          style: Theme.of(context).textTheme.displaySmall,
         ),
       ),
     );
