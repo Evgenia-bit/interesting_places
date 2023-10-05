@@ -14,11 +14,9 @@ import 'dart:io' as _i4;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:image_picker/image_picker.dart' as _i5;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:interesting_places/core/di/di.dart' as _i7;
+import 'package:interesting_places/core/di/di.dart' as _i6;
 import 'package:interesting_places/features/category/domain/repository/category_repository.dart'
     as _i3;
-import 'package:interesting_places/features/image/domain/repository/image_repository.dart'
-    as _i6;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -38,10 +36,8 @@ extension GetItInjectableX on _i1.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i5.ImagePicker>(() => appModule.imagePicker);
-    gh.factory<_i6.ImageRepository>(
-        () => _i6.ImageRepository(appDirectory: gh<_i4.Directory>()));
     return this;
   }
 }
 
-class _$AppModule extends _i7.AppModule {}
+class _$AppModule extends _i6.AppModule {}

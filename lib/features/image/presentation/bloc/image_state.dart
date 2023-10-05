@@ -2,16 +2,16 @@ part of 'image_bloc.dart';
 
 @immutable
 class ImageState {
-  final List<String> fileNameList;
+  final List<String> pathList;
   const ImageState({
-    this.fileNameList = const [],
+    this.pathList = const [],
   });
 
   ImageState copyWith({
-    List<String>? fileNameList,
+    List<String>? pathList,
   }) {
     return ImageState(
-      fileNameList: fileNameList ?? this.fileNameList,
+      pathList: pathList ?? this.pathList,
     );
   }
 }
