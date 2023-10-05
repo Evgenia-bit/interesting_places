@@ -3,21 +3,19 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:interesting_places/core/di/di.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/features/image/presentation/bloc/image_bloc.dart';
 
 class ImageRowItem extends StatelessWidget {
-  final String fileName;
+  final String path;
 
   const ImageRowItem({
     super.key,
-    required this.fileName,
+    required this.path,
   });
 
   @override
   Widget build(BuildContext context) {
-    final path = "${getIt<Directory>().path}/$fileName";
     final file = File(path);
 
     return SizedBox(
@@ -36,7 +34,7 @@ class ImageRowItem extends StatelessWidget {
             padding: MaterialStatePropertyAll(EdgeInsets.all(3)),
           ),
           onPressed: () {
-            context.read<ImageBloc>().add(DeleteImageEvent(fileName: fileName));
+            context.read<ImageBloc>().add(DeleteImageEvent(path: path));
           },
           child: Align(
             alignment: Alignment.topRight,

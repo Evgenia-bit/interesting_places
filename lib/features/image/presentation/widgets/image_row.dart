@@ -9,7 +9,7 @@ class ImageRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fileNameList = context.watch<ImageBloc>().state.fileNameList;
+    final pathList = context.watch<ImageBloc>().state.pathList;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -17,7 +17,7 @@ class ImageRow extends StatelessWidget {
         height: 72,
         child: ListView.separated(
           shrinkWrap: true,
-          itemCount: fileNameList.length + 1,
+          itemCount: pathList.length + 1,
           scrollDirection: Axis.horizontal,
           separatorBuilder: (context, index) {
             return const SizedBox(width: 16);
@@ -27,7 +27,7 @@ class ImageRow extends StatelessWidget {
               return const AddImageButton();
             }
             return ImageRowItem(
-              fileName: fileNameList[index - 1],
+              path: pathList[index - 1],
             );
           },
         ),
