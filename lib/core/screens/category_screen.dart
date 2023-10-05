@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
+import 'package:interesting_places/features/category/data/models/category.dart';
 import 'package:interesting_places/features/category/presentation/bloc/category_bloc.dart';
+import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
 
 @RoutePage()
 class CategoryScreen extends StatefulWidget {
@@ -14,11 +16,18 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  int? activeCategoryId;
+  Category? activeCategory;
+
+  @override
+  void initState() {
+    activeCategory = context.read<NewPlaceBloc>().state.category;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final category = context.watch<CategoryBloc>().state.categoryList;
+    final categoryList = context.watch<CategoryBloc>().state.categoryList;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,14 +49,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
         child: Column(
           children: [
             const SizedBox(height: 16),
-            ...category
+            ...categoryList
                 .map(
                   (c) => _CategoryListItem(
                     name: c.name,
-                    isActive: c.id == activeCategoryId,
+                    isActive: c.id == activeCategory?.id,
                     onPressed: () {
                       setState(() {
-                        activeCategoryId = c.id;
+                        activeCategory = c;
                       });
                     },
                   ),
@@ -56,8 +65,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
             const Spacer(),
             AppButton(
               text: 'Сохранить',
-              onPressed: activeCategoryId != null
+              onPressed: activeCategory != null
                   ? () {
+                      context.read<NewPlaceBloc>().add(
+                            UpdatePlaceStateEvent(category: activeCategory),
+                          );
                       context.router.pop();
                     }
                   : null,
