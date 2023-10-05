@@ -17,7 +17,6 @@ class NewPlaceState {
   final Category? category;
   final String name;
   final String latitude;
-
   final String longitude;
   final String description;
 
@@ -35,8 +34,6 @@ class NewPlaceState {
       imagePathList.isNotEmpty &&
       category != null &&
       name.isNotEmpty &&
-      latitude.isNotEmpty &&
-      longitude.isNotEmpty &&
       isValidLatitude &&
       isValidLongitude &&
       description.isNotEmpty;

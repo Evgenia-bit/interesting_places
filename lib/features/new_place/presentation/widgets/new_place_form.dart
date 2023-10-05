@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interesting_places/core/routes/router.dart';
-import 'package:interesting_places/core/screens/map_screen.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
 import 'package:interesting_places/features/new_place/presentation/widgets/image_row.dart';
@@ -91,8 +90,8 @@ class _CoordinatesRow extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final newPlaceBloc = context.watch<NewPlaceBloc>();
     final state = newPlaceBloc.state;
-    final latitudeIsEmpty = state.latitude.isEmpty;
-    final longitudeIsEmpty = state.longitude.isEmpty;
+    final latIsEmpty = state.latitude.isEmpty;
+    final lonIsEmpty = state.longitude.isEmpty;
 
     return Row(
       children: [
@@ -106,14 +105,14 @@ class _CoordinatesRow extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _Field(
-                borderColor: latitudeIsEmpty || state.isValidLatitude
+                borderColor: latIsEmpty || state.isValidLatitude
                     ? AppColors.green
                     : AppColors.red,
                 onChanged: (v) {
                   newPlaceBloc.add(UpdatePlaceStateEvent(latitude: v));
                 },
                 keyboardType: TextInputType.number,
-                value: latitudeIsEmpty ? null : state.latitude,
+                value: state.latitude,
               ),
             ],
           ),
@@ -129,15 +128,15 @@ class _CoordinatesRow extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _Field(
-                  borderColor:
-                      longitudeIsEmpty || newPlaceBloc.state.isValidLongitude
-                          ? AppColors.green
-                          : AppColors.red,
-                  onChanged: (v) {
-                    newPlaceBloc.add(UpdatePlaceStateEvent(longitude: v));
-                  },
-                  keyboardType: TextInputType.number,
-                  value: longitudeIsEmpty ? null : state.longitude),
+                borderColor: lonIsEmpty || newPlaceBloc.state.isValidLongitude
+                    ? AppColors.green
+                    : AppColors.red,
+                onChanged: (v) {
+                  newPlaceBloc.add(UpdatePlaceStateEvent(longitude: v));
+                },
+                keyboardType: TextInputType.number,
+                value: state.longitude,
+              ),
             ],
           ),
         ),
