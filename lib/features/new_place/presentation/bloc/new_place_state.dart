@@ -4,7 +4,7 @@ part of 'new_place_bloc.dart';
 class NewPlaceState {
   const NewPlaceState({
     this.status = NewPlaceStatus.none,
-    this.imageFileNameList = const [],
+    this.imagePathList = const [],
     this.category,
     this.name = '',
     this.latitude = '',
@@ -13,7 +13,7 @@ class NewPlaceState {
   });
 
   final NewPlaceStatus status;
-  final List<String> imageFileNameList;
+  final List<String> imagePathList;
   final Category? category;
   final String name;
   final String latitude;
@@ -32,7 +32,7 @@ class NewPlaceState {
   }
 
   bool get isValid =>
-      imageFileNameList.isNotEmpty &&
+      imagePathList.isNotEmpty &&
       category != null &&
       name.isNotEmpty &&
       latitude.isNotEmpty &&
@@ -43,7 +43,7 @@ class NewPlaceState {
 
   NewPlaceState copyWith({
     NewPlaceStatus? status,
-    List<String>? imageFileNameList,
+    List<String>? imagePathList,
     Category? category,
     String? name,
     String? latitude,
@@ -52,7 +52,7 @@ class NewPlaceState {
   }) {
     return NewPlaceState(
       status: status ?? this.status,
-      imageFileNameList: imageFileNameList ?? this.imageFileNameList,
+      imagePathList: imagePathList ?? this.imagePathList,
       category: category ?? this.category,
       name: name ?? this.name,
       latitude: latitude ?? this.latitude,

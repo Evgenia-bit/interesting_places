@@ -23,15 +23,15 @@ class UpdatePlaceStateEvent extends NewPlaceEvent {
 
 class AddImageToPlaceStateEvent extends NewPlaceEvent {
   AddImageToPlaceStateEvent({
-    required this.fileName
+    required this.path
   });
-  final String fileName;
+  final String path;
 }
 
 class DeleteImageFromPlaceStateEvent extends NewPlaceEvent {
   DeleteImageFromPlaceStateEvent({
-    required this.fileName
+    required this.path
   });
-    final String fileName;
+    final String path;
 }
 

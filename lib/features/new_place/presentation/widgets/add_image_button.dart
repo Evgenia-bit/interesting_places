@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
-import 'package:interesting_places/features/image/presentation/bloc/image_bloc.dart';
+import 'package:interesting_places/features/add_image/presentation/bloc/add_image_bloc.dart';
 import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
 
 class AddImageButton extends StatelessWidget {
@@ -9,13 +9,12 @@ class AddImageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ImageBloc, ImageState>(
+    return BlocListener<AddImageBloc, AddImageState>(
       listener: (context, state) {
-        if (state.status == AddImageStatus.added &&
-            state.addedFileName != null) {
+        if (state.status == AddImageStatus.added && state.path != null) {
           context
               .read<NewPlaceBloc>()
-              .add(AddImageToPlaceStateEvent(fileName: state.addedFileName!));
+              .add(AddImageToPlaceStateEvent(path: state.path!));
         }
       },
       child: SizedBox(
@@ -31,7 +30,7 @@ class AddImageButton extends StatelessWidget {
           ),
           child: TextButton(
             onPressed: () {
-              context.read<ImageBloc>().add(AddImageEvent());
+              context.read<AddImageBloc>().add(AddImageEvent());
             },
             child: const Icon(
               Icons.add,

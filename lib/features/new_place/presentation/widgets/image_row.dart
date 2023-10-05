@@ -3,9 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:interesting_places/core/di/di.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
-import 'package:interesting_places/features/image/presentation/bloc/image_bloc.dart';
 import 'package:interesting_places/features/new_place/presentation/widgets/add_image_button.dart';
 import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
 
@@ -14,7 +12,7 @@ class ImageRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fileNameList = context.watch<NewPlaceBloc>().state.imageFileNameList;
+    final imagePathList = context.watch<NewPlaceBloc>().state.imagePathList;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -22,7 +20,7 @@ class ImageRow extends StatelessWidget {
         height: 72,
         child: ListView.separated(
           shrinkWrap: true,
-          itemCount: fileNameList.length + 1,
+          itemCount: imagePathList.length + 1,
           scrollDirection: Axis.horizontal,
           separatorBuilder: (context, index) {
             return const SizedBox(width: 16);
@@ -32,7 +30,7 @@ class ImageRow extends StatelessWidget {
               return const AddImageButton();
             }
             return ImageRowItem(
-              fileName: fileNameList[index - 1],
+              path: imagePathList[index - 1],
             );
           },
         ),
@@ -42,16 +40,15 @@ class ImageRow extends StatelessWidget {
 }
 
 class ImageRowItem extends StatelessWidget {
-  final String fileName;
+  final String path;
 
   const ImageRowItem({
     super.key,
-    required this.fileName,
+    required this.path,
   });
 
   @override
   Widget build(BuildContext context) {
-    final path = "${getIt<Directory>().path}/$fileName";
     final file = File(path);
 
     return SizedBox(
@@ -70,10 +67,9 @@ class ImageRowItem extends StatelessWidget {
             padding: MaterialStatePropertyAll(EdgeInsets.all(3)),
           ),
           onPressed: () {
-            context.read<ImageBloc>().add(DeleteImageEvent(fileName: fileName));
             context
                 .read<NewPlaceBloc>()
-                .add(DeleteImageFromPlaceStateEvent(fileName: fileName));
+                .add(DeleteImageFromPlaceStateEvent(path: path));
           },
           child: Align(
             alignment: Alignment.topRight,

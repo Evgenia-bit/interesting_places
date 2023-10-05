@@ -41,7 +41,7 @@ class NewPlaceBloc extends Bloc<NewPlaceEvent, NewPlaceState> {
   ) {
     emit(
       state.copyWith(
-        imageFileNameList: [...state.imageFileNameList, event.fileName],
+        imagePathList: [...state.imagePathList, event.path],
       ),
     );
   }
@@ -50,11 +50,11 @@ class NewPlaceBloc extends Bloc<NewPlaceEvent, NewPlaceState> {
     DeleteImageFromPlaceStateEvent event,
     Emitter<NewPlaceState> emit,
   ) {
-    final imageFileNameList = state.imageFileNameList;
-    imageFileNameList.remove(event.fileName);
+    final imagePathList = state.imagePathList;
+    imagePathList.remove(event.path);
     emit(
       state.copyWith(
-        imageFileNameList: imageFileNameList,
+        imagePathList: imagePathList,
       ),
     );
   }

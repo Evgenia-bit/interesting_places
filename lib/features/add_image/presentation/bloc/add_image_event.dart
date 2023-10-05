@@ -1,4 +1,4 @@
-part of 'image_bloc.dart';
+part of 'add_image_bloc.dart';
 
 @immutable
 sealed class ImageEvent {}
@@ -6,7 +6,7 @@ sealed class ImageEvent {}
 class AddImageEvent extends ImageEvent {}
 
 class DeleteImageEvent extends ImageEvent {
-  DeleteImageEvent({required this.fileName});
+  DeleteImageEvent({required this.path});
 
-  final String fileName;
+  final String path;
 }
