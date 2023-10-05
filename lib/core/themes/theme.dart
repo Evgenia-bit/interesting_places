@@ -6,6 +6,7 @@ final theme = ThemeData(
     elevation: 0,
     color: Colors.transparent,
     centerTitle: true,
+    toolbarHeight: 56,
   ),
   inputDecorationTheme: const InputDecorationTheme(
     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -36,6 +37,11 @@ const _textTheme = TextTheme(
   labelSmall: TextStyle(
     color: AppColors.lightGrey,
     fontSize: 12,
+    fontWeight: FontWeight.w400,
+  ),
+  bodySmall: TextStyle(
+    color: AppColors.grey,
+    fontSize: 14,
     fontWeight: FontWeight.w400,
   ),
 );

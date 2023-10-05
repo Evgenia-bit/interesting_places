@@ -1,5 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:interesting_places/core/routes/router.dart';
+import 'package:interesting_places/core/screens/map_screen.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
 import 'package:interesting_places/features/new_place/presentation/widgets/image_row.dart';
@@ -88,6 +91,8 @@ class _CoordinatesRow extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final newPlaceBloc = context.watch<NewPlaceBloc>();
     final state = newPlaceBloc.state;
+    final latitudeIsEmpty = state.latitude.isEmpty;
+    final longitudeIsEmpty = state.longitude.isEmpty;
 
     return Row(
       children: [
@@ -101,13 +106,14 @@ class _CoordinatesRow extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _Field(
-                borderColor: state.latitude.isEmpty || state.isValidLatitude
+                borderColor: latitudeIsEmpty || state.isValidLatitude
                     ? AppColors.green
                     : AppColors.red,
                 onChanged: (v) {
                   newPlaceBloc.add(UpdatePlaceStateEvent(latitude: v));
                 },
                 keyboardType: TextInputType.number,
+                value: latitudeIsEmpty ? null : state.latitude,
               ),
             ],
           ),
@@ -123,15 +129,15 @@ class _CoordinatesRow extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _Field(
-                borderColor: state.longitude.isEmpty ||
-                        newPlaceBloc.state.isValidLongitude
-                    ? AppColors.green
-                    : AppColors.red,
-                onChanged: (v) {
-                  newPlaceBloc.add(UpdatePlaceStateEvent(longitude: v));
-                },
-                keyboardType: TextInputType.number,
-              ),
+                  borderColor:
+                      longitudeIsEmpty || newPlaceBloc.state.isValidLongitude
+                          ? AppColors.green
+                          : AppColors.red,
+                  onChanged: (v) {
+                    newPlaceBloc.add(UpdatePlaceStateEvent(longitude: v));
+                  },
+                  keyboardType: TextInputType.number,
+                  value: longitudeIsEmpty ? null : state.longitude),
             ],
           ),
         ),
@@ -148,7 +154,9 @@ class _MapButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          context.router.push(const MapRoute());
+        },
         style: const ButtonStyle(
           padding: MaterialStatePropertyAll(
             EdgeInsets.symmetric(vertical: 12),
@@ -168,38 +176,56 @@ class _MapButton extends StatelessWidget {
   }
 }
 
-class _Field extends StatelessWidget {
+class _Field extends StatefulWidget {
   const _Field({
     super.key,
     required this.borderColor,
     this.maxLines,
     required this.onChanged,
     this.keyboardType,
+    this.value,
   });
 
   final int? maxLines;
   final void Function(String) onChanged;
   final TextInputType? keyboardType;
   final Color borderColor;
+  final String? value;
+
+  @override
+  State<_Field> createState() => _FieldState();
+}
+
+class _FieldState extends State<_Field> {
+  final _controller = TextEditingController();
+
+  @override
+  void didUpdateWidget(covariant _Field oldWidget) {
+    if (widget.value != null) {
+      _controller.text = widget.value!;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      keyboardType: keyboardType,
-      maxLines: maxLines,
-      onChanged: onChanged,
+      controller: _controller,
+      keyboardType: widget.keyboardType,
+      maxLines: widget.maxLines,
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
-            color: borderColor,
+            color: widget.borderColor,
             width: 2,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
-            color: borderColor,
+            color: widget.borderColor,
           ),
         ),
       ),

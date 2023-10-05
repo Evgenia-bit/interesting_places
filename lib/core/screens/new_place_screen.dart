@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:interesting_places/core/widgets/cancel_button.dart';
 import 'package:interesting_places/features/new_place/presentation/widgets/new_place_form.dart';
 
 @RoutePage()
@@ -17,13 +18,7 @@ class NewPlaceScreen extends StatelessWidget {
           style: textTheme.headlineSmall,
         ),
         leadingWidth: 80,
-        leading: TextButton(
-          child: Text(
-            'Отмена',
-            style: textTheme.displayMedium,
-          ),
-          onPressed: () {},
-        ),
+        leading: const CancelButton(),
       ),
       body: const NewPlaceForm(),
     );
