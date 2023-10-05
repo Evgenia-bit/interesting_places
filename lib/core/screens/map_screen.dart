@@ -87,8 +87,8 @@ class _Map extends StatefulWidget {
 
 class _MapState extends State<_Map> {
   final controller = MapController();
-  double? latitude;
-  double? longitude;
+  double? _initialLatitude;
+  double? _initialLongitude;
 
   @override
   void initState() {
@@ -97,8 +97,8 @@ class _MapState extends State<_Map> {
         placeState.isValidLatitude &&
         placeState.longitude.isNotEmpty &&
         placeState.isValidLongitude) {
-      latitude = double.tryParse(placeState.latitude);
-      longitude = double.tryParse(placeState.longitude);
+      _initialLatitude = double.tryParse(placeState.latitude);
+      _initialLongitude = double.tryParse(placeState.longitude);
     } else {
       context.read<GetCurrentPositionBloc>().add(GetCurrentPositionEvent());
     }
@@ -109,9 +109,9 @@ class _MapState extends State<_Map> {
   Widget build(BuildContext context) {
     final positionState = context.watch<GetCurrentPositionBloc>().state;
 
-    if (latitude == null || longitude == null) {
-      latitude = positionState.latitude;
-      longitude = positionState.longitude;
+    if (_initialLatitude == null || _initialLongitude == null) {
+      _initialLatitude = positionState.latitude;
+      _initialLongitude = positionState.longitude;
       setState(() {});
     }
 
@@ -126,16 +126,19 @@ class _MapState extends State<_Map> {
           );
         }
 
-        if (state.status == GetCurrentPositionStatus.success) {
+        if (state.status == GetCurrentPositionStatus.success &&
+            state.latitude != null &&
+            state.longitude != null) {
           controller.move(
-            LatLng(positionState.latitude!, positionState.longitude!),
+            LatLng(state.latitude!, state.longitude!),
             controller.zoom,
           );
+          setState(() {});
         }
       },
       child: Builder(
         builder: (context) {
-          if (latitude == null || longitude == null) {
+          if (_initialLatitude == null || _initialLongitude == null) {
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -144,7 +147,7 @@ class _MapState extends State<_Map> {
           return FlutterMap(
             mapController: controller,
             options: MapOptions(
-              center: LatLng(latitude!, longitude!),
+              center: LatLng(_initialLatitude!, _initialLongitude!),
               zoom: 13,
             ),
             nonRotatedChildren: [

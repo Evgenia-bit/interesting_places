@@ -23,7 +23,7 @@ class GetCurrentPositionBloc
 
   Future<void> _handleGetCurrentPosition(
     GetCurrentPositionEvent _,
-    Emitter<GetCurrentPositionState> state,
+    Emitter<GetCurrentPositionState> emit,
   ) async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -57,5 +57,7 @@ class GetCurrentPositionBloc
       longitude: position.longitude,
       status: GetCurrentPositionStatus.success,
     ));
+
+    emit(state.copyWith(status: GetCurrentPositionStatus.none));
   }
 }
