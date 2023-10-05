@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
-import 'package:interesting_places/features/add_image/presentation/widgets/image_row.dart';
 import 'package:interesting_places/features/create_new_place/presentation/widgets/choose_category_button.dart.dart';
+import 'package:interesting_places/features/image/presentation/widgets/image_row.dart';
 
 class CreateNewPlaceForm extends StatelessWidget {
   const CreateNewPlaceForm({super.key});
