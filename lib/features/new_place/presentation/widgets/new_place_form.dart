@@ -101,11 +101,12 @@ class _CoordinatesRow extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _Field(
-                borderColor: AppColors.green,
+                borderColor: state.latitude.isEmpty || state.isValidLatitude
+                    ? AppColors.green
+                    : AppColors.red,
                 onChanged: (v) {
                   newPlaceBloc.add(UpdatePlaceStateEvent(latitude: v));
                 },
-                isValid: state.latitude.isEmpty || state.isValidLatitude,
                 keyboardType: TextInputType.number,
               ),
             ],
@@ -122,12 +123,13 @@ class _CoordinatesRow extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _Field(
-                borderColor: AppColors.green,
+                borderColor: state.longitude.isEmpty ||
+                        newPlaceBloc.state.isValidLongitude
+                    ? AppColors.green
+                    : AppColors.red,
                 onChanged: (v) {
                   newPlaceBloc.add(UpdatePlaceStateEvent(longitude: v));
                 },
-                isValid: state.longitude.isEmpty ||
-                    newPlaceBloc.state.isValidLongitude,
                 keyboardType: TextInputType.number,
               ),
             ],
@@ -169,18 +171,16 @@ class _MapButton extends StatelessWidget {
 class _Field extends StatelessWidget {
   const _Field({
     super.key,
-    required Color borderColor,
+    required this.borderColor,
     this.maxLines,
     required this.onChanged,
-    this.isValid = true,
     this.keyboardType,
-  }) : _borderColor = isValid ? borderColor : AppColors.red;
+  });
 
   final int? maxLines;
   final void Function(String) onChanged;
-  final bool isValid;
   final TextInputType? keyboardType;
-  final Color _borderColor;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -192,14 +192,14 @@ class _Field extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
-            color: _borderColor,
+            color: borderColor,
             width: 2,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
-            color: _borderColor,
+            color: borderColor,
           ),
         ),
       ),
