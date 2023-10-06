@@ -1,5 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:interesting_places/core/data/models/category.dart';
+
 import 'package:interesting_places/features/new_place/domain/repository/new_place_repository.dart';
 
 part 'new_place_event.dart';
@@ -29,6 +32,8 @@ class NewPlaceBloc extends Bloc<NewPlaceEvent, NewPlaceState> {
 
     try {
       await _repository.save(
+        imagePathList: state.imagePathList,
+        category: state.category!,
         name: state.name,
         description: state.description,
         latitude: double.parse(state.latitude),

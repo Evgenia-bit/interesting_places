@@ -17,6 +17,13 @@ class $PlacesTable extends Places with TableInfo<$PlacesTable, Place> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
+  @override
+  late final GeneratedColumnWithTypeConverter<Category, int> category =
+      GeneratedColumn<int>('category', aliasedName, false,
+              type: DriftSqlType.int, requiredDuringInsert: true)
+          .withConverter<Category>($PlacesTable.$convertercategory);
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -42,7 +49,7 @@ class $PlacesTable extends Places with TableInfo<$PlacesTable, Place> {
       type: DriftSqlType.double, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, description, latitude, longitude];
+      [id, category, name, description, latitude, longitude];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -56,6 +63,7 @@ class $PlacesTable extends Places with TableInfo<$PlacesTable, Place> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
+    context.handle(_categoryMeta, const VerificationResult.success());
     if (data.containsKey('name')) {
       context.handle(
           _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
@@ -93,6 +101,9 @@ class $PlacesTable extends Places with TableInfo<$PlacesTable, Place> {
     return Place(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      category: $PlacesTable.$convertercategory.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}category'])!),
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       description: attachedDatabase.typeMapping
@@ -108,16 +119,21 @@ class $PlacesTable extends Places with TableInfo<$PlacesTable, Place> {
   $PlacesTable createAlias(String alias) {
     return $PlacesTable(attachedDatabase, alias);
   }
+
+  static JsonTypeConverter2<Category, int, int> $convertercategory =
+      const EnumIndexConverter<Category>(Category.values);
 }
 
 class Place extends DataClass implements Insertable<Place> {
   final int id;
+  final Category category;
   final String name;
   final String description;
   final double latitude;
   final double longitude;
   const Place(
       {required this.id,
+      required this.category,
       required this.name,
       required this.description,
       required this.latitude,
@@ -126,6 +142,10 @@ class Place extends DataClass implements Insertable<Place> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    {
+      final converter = $PlacesTable.$convertercategory;
+      map['category'] = Variable<int>(converter.toSql(category));
+    }
     map['name'] = Variable<String>(name);
     map['description'] = Variable<String>(description);
     map['latitude'] = Variable<double>(latitude);
@@ -136,6 +156,7 @@ class Place extends DataClass implements Insertable<Place> {
   PlacesCompanion toCompanion(bool nullToAbsent) {
     return PlacesCompanion(
       id: Value(id),
+      category: Value(category),
       name: Value(name),
       description: Value(description),
       latitude: Value(latitude),
@@ -148,6 +169,8 @@ class Place extends DataClass implements Insertable<Place> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Place(
       id: serializer.fromJson<int>(json['id']),
+      category: $PlacesTable.$convertercategory
+          .fromJson(serializer.fromJson<int>(json['category'])),
       name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String>(json['description']),
       latitude: serializer.fromJson<double>(json['latitude']),
@@ -159,6 +182,8 @@ class Place extends DataClass implements Insertable<Place> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'category': serializer
+          .toJson<int>($PlacesTable.$convertercategory.toJson(category)),
       'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String>(description),
       'latitude': serializer.toJson<double>(latitude),
@@ -168,12 +193,14 @@ class Place extends DataClass implements Insertable<Place> {
 
   Place copyWith(
           {int? id,
+          Category? category,
           String? name,
           String? description,
           double? latitude,
           double? longitude}) =>
       Place(
         id: id ?? this.id,
+        category: category ?? this.category,
         name: name ?? this.name,
         description: description ?? this.description,
         latitude: latitude ?? this.latitude,
@@ -183,6 +210,7 @@ class Place extends DataClass implements Insertable<Place> {
   String toString() {
     return (StringBuffer('Place(')
           ..write('id: $id, ')
+          ..write('category: $category, ')
           ..write('name: $name, ')
           ..write('description: $description, ')
           ..write('latitude: $latitude, ')
@@ -192,12 +220,14 @@ class Place extends DataClass implements Insertable<Place> {
   }
 
   @override
-  int get hashCode => Object.hash(id, name, description, latitude, longitude);
+  int get hashCode =>
+      Object.hash(id, category, name, description, latitude, longitude);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Place &&
           other.id == this.id &&
+          other.category == this.category &&
           other.name == this.name &&
           other.description == this.description &&
           other.latitude == this.latitude &&
@@ -206,12 +236,14 @@ class Place extends DataClass implements Insertable<Place> {
 
 class PlacesCompanion extends UpdateCompanion<Place> {
   final Value<int> id;
+  final Value<Category> category;
   final Value<String> name;
   final Value<String> description;
   final Value<double> latitude;
   final Value<double> longitude;
   const PlacesCompanion({
     this.id = const Value.absent(),
+    this.category = const Value.absent(),
     this.name = const Value.absent(),
     this.description = const Value.absent(),
     this.latitude = const Value.absent(),
@@ -219,16 +251,19 @@ class PlacesCompanion extends UpdateCompanion<Place> {
   });
   PlacesCompanion.insert({
     this.id = const Value.absent(),
+    required Category category,
     required String name,
     required String description,
     required double latitude,
     required double longitude,
-  })  : name = Value(name),
+  })  : category = Value(category),
+        name = Value(name),
         description = Value(description),
         latitude = Value(latitude),
         longitude = Value(longitude);
   static Insertable<Place> custom({
     Expression<int>? id,
+    Expression<int>? category,
     Expression<String>? name,
     Expression<String>? description,
     Expression<double>? latitude,
@@ -236,6 +271,7 @@ class PlacesCompanion extends UpdateCompanion<Place> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (category != null) 'category': category,
       if (name != null) 'name': name,
       if (description != null) 'description': description,
       if (latitude != null) 'latitude': latitude,
@@ -245,12 +281,14 @@ class PlacesCompanion extends UpdateCompanion<Place> {
 
   PlacesCompanion copyWith(
       {Value<int>? id,
+      Value<Category>? category,
       Value<String>? name,
       Value<String>? description,
       Value<double>? latitude,
       Value<double>? longitude}) {
     return PlacesCompanion(
       id: id ?? this.id,
+      category: category ?? this.category,
       name: name ?? this.name,
       description: description ?? this.description,
       latitude: latitude ?? this.latitude,
@@ -263,6 +301,10 @@ class PlacesCompanion extends UpdateCompanion<Place> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (category.present) {
+      final converter = $PlacesTable.$convertercategory;
+      map['category'] = Variable<int>(converter.toSql(category.value));
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -283,6 +325,7 @@ class PlacesCompanion extends UpdateCompanion<Place> {
   String toString() {
     return (StringBuffer('PlacesCompanion(')
           ..write('id: $id, ')
+          ..write('category: $category, ')
           ..write('name: $name, ')
           ..write('description: $description, ')
           ..write('latitude: $latitude, ')
@@ -312,13 +355,13 @@ class $ImagesTable extends Images with TableInfo<$ImagesTable, Image> {
   late final GeneratedColumn<int> placeId = GeneratedColumn<int>(
       'place_id', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _dataMeta = const VerificationMeta('data');
   @override
-  late final GeneratedColumn<Uint8List> name = GeneratedColumn<Uint8List>(
-      'name', aliasedName, false,
+  late final GeneratedColumn<Uint8List> data = GeneratedColumn<Uint8List>(
+      'data', aliasedName, false,
       type: DriftSqlType.blob, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, placeId, name];
+  List<GeneratedColumn> get $columns => [id, placeId, data];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -338,11 +381,11 @@ class $ImagesTable extends Images with TableInfo<$ImagesTable, Image> {
     } else if (isInserting) {
       context.missing(_placeIdMeta);
     }
-    if (data.containsKey('name')) {
+    if (data.containsKey('data')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+          _dataMeta, this.data.isAcceptableOrUnknown(data['data']!, _dataMeta));
     } else if (isInserting) {
-      context.missing(_nameMeta);
+      context.missing(_dataMeta);
     }
     return context;
   }
@@ -357,8 +400,8 @@ class $ImagesTable extends Images with TableInfo<$ImagesTable, Image> {
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       placeId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}place_id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}name'])!,
+      data: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}data'])!,
     );
   }
 
@@ -371,14 +414,14 @@ class $ImagesTable extends Images with TableInfo<$ImagesTable, Image> {
 class Image extends DataClass implements Insertable<Image> {
   final int id;
   final int placeId;
-  final Uint8List name;
-  const Image({required this.id, required this.placeId, required this.name});
+  final Uint8List data;
+  const Image({required this.id, required this.placeId, required this.data});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['place_id'] = Variable<int>(placeId);
-    map['name'] = Variable<Uint8List>(name);
+    map['data'] = Variable<Uint8List>(data);
     return map;
   }
 
@@ -386,7 +429,7 @@ class Image extends DataClass implements Insertable<Image> {
     return ImagesCompanion(
       id: Value(id),
       placeId: Value(placeId),
-      name: Value(name),
+      data: Value(data),
     );
   }
 
@@ -396,7 +439,7 @@ class Image extends DataClass implements Insertable<Image> {
     return Image(
       id: serializer.fromJson<int>(json['id']),
       placeId: serializer.fromJson<int>(json['placeId']),
-      name: serializer.fromJson<Uint8List>(json['name']),
+      data: serializer.fromJson<Uint8List>(json['data']),
     );
   }
   @override
@@ -405,69 +448,69 @@ class Image extends DataClass implements Insertable<Image> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'placeId': serializer.toJson<int>(placeId),
-      'name': serializer.toJson<Uint8List>(name),
+      'data': serializer.toJson<Uint8List>(data),
     };
   }
 
-  Image copyWith({int? id, int? placeId, Uint8List? name}) => Image(
+  Image copyWith({int? id, int? placeId, Uint8List? data}) => Image(
         id: id ?? this.id,
         placeId: placeId ?? this.placeId,
-        name: name ?? this.name,
+        data: data ?? this.data,
       );
   @override
   String toString() {
     return (StringBuffer('Image(')
           ..write('id: $id, ')
           ..write('placeId: $placeId, ')
-          ..write('name: $name')
+          ..write('data: $data')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, placeId, $driftBlobEquality.hash(name));
+  int get hashCode => Object.hash(id, placeId, $driftBlobEquality.hash(data));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Image &&
           other.id == this.id &&
           other.placeId == this.placeId &&
-          $driftBlobEquality.equals(other.name, this.name));
+          $driftBlobEquality.equals(other.data, this.data));
 }
 
 class ImagesCompanion extends UpdateCompanion<Image> {
   final Value<int> id;
   final Value<int> placeId;
-  final Value<Uint8List> name;
+  final Value<Uint8List> data;
   const ImagesCompanion({
     this.id = const Value.absent(),
     this.placeId = const Value.absent(),
-    this.name = const Value.absent(),
+    this.data = const Value.absent(),
   });
   ImagesCompanion.insert({
     this.id = const Value.absent(),
     required int placeId,
-    required Uint8List name,
+    required Uint8List data,
   })  : placeId = Value(placeId),
-        name = Value(name);
+        data = Value(data);
   static Insertable<Image> custom({
     Expression<int>? id,
     Expression<int>? placeId,
-    Expression<Uint8List>? name,
+    Expression<Uint8List>? data,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (placeId != null) 'place_id': placeId,
-      if (name != null) 'name': name,
+      if (data != null) 'data': data,
     });
   }
 
   ImagesCompanion copyWith(
-      {Value<int>? id, Value<int>? placeId, Value<Uint8List>? name}) {
+      {Value<int>? id, Value<int>? placeId, Value<Uint8List>? data}) {
     return ImagesCompanion(
       id: id ?? this.id,
       placeId: placeId ?? this.placeId,
-      name: name ?? this.name,
+      data: data ?? this.data,
     );
   }
 
@@ -480,8 +523,8 @@ class ImagesCompanion extends UpdateCompanion<Image> {
     if (placeId.present) {
       map['place_id'] = Variable<int>(placeId.value);
     }
-    if (name.present) {
-      map['name'] = Variable<Uint8List>(name.value);
+    if (data.present) {
+      map['data'] = Variable<Uint8List>(data.value);
     }
     return map;
   }
@@ -491,7 +534,7 @@ class ImagesCompanion extends UpdateCompanion<Image> {
     return (StringBuffer('ImagesCompanion(')
           ..write('id: $id, ')
           ..write('placeId: $placeId, ')
-          ..write('name: $name')
+          ..write('data: $data')
           ..write(')'))
         .toString();
   }

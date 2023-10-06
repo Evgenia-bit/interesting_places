@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:interesting_places/core/data/category.dart';
+import 'package:interesting_places/core/data/models/category.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
 import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
