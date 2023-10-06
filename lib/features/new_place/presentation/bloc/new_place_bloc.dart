@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:interesting_places/features/category/data/models/category.dart';
+import 'package:interesting_places/core/data/category.dart';
 
 part 'new_place_event.dart';
 part 'new_place_state.dart';
