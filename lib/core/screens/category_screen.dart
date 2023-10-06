@@ -1,10 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:interesting_places/core/data/category.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
-import 'package:interesting_places/features/category/data/models/category.dart';
-import 'package:interesting_places/features/category/presentation/bloc/category_bloc.dart';
 import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
 
 @RoutePage()
@@ -27,8 +26,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final categoryList = context.watch<CategoryBloc>().state.categoryList;
-
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -49,11 +47,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
         child: Column(
           children: [
             const SizedBox(height: 16),
-            ...categoryList
+            ...Category.values
                 .map(
                   (c) => _CategoryListItem(
                     name: c.name,
-                    isActive: c.id == activeCategory?.id,
+                    isActive: c == activeCategory,
                     onPressed: () {
                       setState(() {
                         activeCategory = c;
