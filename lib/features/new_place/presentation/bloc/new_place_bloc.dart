@@ -24,7 +24,10 @@ class NewPlaceBloc extends Bloc<NewPlaceEvent, NewPlaceState> {
     CreatePlaceEvent event,
     Emitter<NewPlaceState> emit,
   ) async {
-    if (!state.isValid) return;
+    if (state.status == CreatePlaceStatus.processing || !state.isValid) return;
+
+    emit(state.copyWith(status: CreatePlaceStatus.processing));
+
     try {
       await _repository.save(
         name: state.name,
@@ -32,8 +35,11 @@ class NewPlaceBloc extends Bloc<NewPlaceEvent, NewPlaceState> {
         latitude: double.parse(state.latitude),
         longitude: double.parse(state.longitude),
       );
-    } catch (e) {
-      print(e);
+      emit(state.copyWith(status: CreatePlaceStatus.created));
+    } catch (_) {
+      emit(state.copyWith(status: CreatePlaceStatus.failed));
+    } finally {
+      emit(state.copyWith(status: CreatePlaceStatus.none));
     }
   }
 

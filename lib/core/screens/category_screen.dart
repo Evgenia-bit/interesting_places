@@ -64,7 +64,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 .toList(),
             const Spacer(),
             AppButton(
-              text: 'Сохранить',
               onPressed: activeCategory != null
                   ? () {
                       context.read<NewPlaceBloc>().add(
@@ -73,6 +72,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       context.router.pop();
                     }
                   : null,
+              child: Text('Сохранить'.toUpperCase()),
             )
           ],
         ),

@@ -15,7 +15,8 @@ class NewPlaceForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    final newPlaceBloc = context.watch<NewPlaceBloc>();
+    final placeBloc = context.read<NewPlaceBloc>();
+    final isValid = context.select((NewPlaceBloc bloc) => bloc.state.isValid);
 
     return CustomScrollView(
       slivers: [
@@ -42,7 +43,7 @@ class NewPlaceForm extends StatelessWidget {
                 _Field(
                   borderColor: AppColors.green,
                   onChanged: (v) {
-                    newPlaceBloc.add(UpdatePlaceStateEvent(name: v));
+                    placeBloc.add(UpdatePlaceStateEvent(name: v));
                   },
                 ),
                 const SizedBox(height: 24),
@@ -58,19 +59,12 @@ class NewPlaceForm extends StatelessWidget {
                   maxLines: 3,
                   borderColor: AppColors.lightGrey,
                   onChanged: (v) {
-                    newPlaceBloc.add(UpdatePlaceStateEvent(description: v));
+                    placeBloc.add(UpdatePlaceStateEvent(description: v));
                   },
                 ),
                 const SizedBox(height: 28),
                 const Spacer(),
-                AppButton(
-                  text: 'Создать',
-                  onPressed: newPlaceBloc.state.isValid
-                      ? () {
-                          newPlaceBloc.add(CreatePlaceEvent());
-                        }
-                      : null,
-                ),
+                _CreateButton(),
               ],
             ),
           ),
@@ -88,10 +82,17 @@ class _CoordinatesRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final newPlaceBloc = context.watch<NewPlaceBloc>();
-    final state = newPlaceBloc.state;
-    final latIsEmpty = state.latitude.isEmpty;
-    final lonIsEmpty = state.longitude.isEmpty;
+    final placeBloc = context.read<NewPlaceBloc>();
+
+    final (latitude, longitude, isValidLatitude, isValidLongitude) =
+        context.select(
+      (NewPlaceBloc bloc) => (
+        bloc.state.latitude,
+        bloc.state.longitude,
+        bloc.state.isValidLatitude,
+        bloc.state.isValidLongitude,
+      ),
+    );
 
     return Row(
       children: [
@@ -105,14 +106,14 @@ class _CoordinatesRow extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _Field(
-                borderColor: latIsEmpty || state.isValidLatitude
+                borderColor: latitude.isEmpty || isValidLatitude
                     ? AppColors.green
                     : AppColors.red,
                 onChanged: (v) {
-                  newPlaceBloc.add(UpdatePlaceStateEvent(latitude: v));
+                  placeBloc.add(UpdatePlaceStateEvent(latitude: v));
                 },
                 keyboardType: TextInputType.number,
-                value: state.latitude,
+                value: latitude,
               ),
             ],
           ),
@@ -128,14 +129,14 @@ class _CoordinatesRow extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _Field(
-                borderColor: lonIsEmpty || newPlaceBloc.state.isValidLongitude
+                borderColor: longitude.isEmpty || isValidLongitude
                     ? AppColors.green
                     : AppColors.red,
                 onChanged: (v) {
-                  newPlaceBloc.add(UpdatePlaceStateEvent(longitude: v));
+                  placeBloc.add(UpdatePlaceStateEvent(longitude: v));
                 },
                 keyboardType: TextInputType.number,
-                value: state.longitude,
+                value: longitude,
               ),
             ],
           ),
@@ -171,6 +172,46 @@ class _MapButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _CreateButton extends StatelessWidget {
+  const _CreateButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<NewPlaceBloc, NewPlaceState>(
+      listener: (context, state) {
+        if (state.status == CreatePlaceStatus.failed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Не удалось создать место'),
+            ),
+          );
+        } else if (state.status == CreatePlaceStatus.created) {
+          //TODO: переход на страницу со списком мест
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Место успешно создано'),
+            ),
+          );
+        }
+      },
+      child: Builder(builder: (context) {
+        final (status, isValid) = context.select(
+            (NewPlaceBloc bloc) => (bloc.state.status, bloc.state.isValid));
+        return AppButton(
+          onPressed: isValid
+              ? () {
+                  context.read<NewPlaceBloc>().add(CreatePlaceEvent());
+                }
+              : null,
+          child: status == CreatePlaceStatus.processing
+              ? const CircularProgressIndicator()
+              : Text('Создать'.toUpperCase()),
+        );
+      }),
     );
   }
 }

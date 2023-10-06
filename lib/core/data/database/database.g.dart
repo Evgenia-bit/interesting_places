@@ -292,12 +292,218 @@ class PlacesCompanion extends UpdateCompanion<Place> {
   }
 }
 
+class $ImagesTable extends Images with TableInfo<$ImagesTable, Image> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ImagesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _placeIdMeta =
+      const VerificationMeta('placeId');
+  @override
+  late final GeneratedColumn<int> placeId = GeneratedColumn<int>(
+      'place_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<Uint8List> name = GeneratedColumn<Uint8List>(
+      'name', aliasedName, false,
+      type: DriftSqlType.blob, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, placeId, name];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'images';
+  @override
+  VerificationContext validateIntegrity(Insertable<Image> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('place_id')) {
+      context.handle(_placeIdMeta,
+          placeId.isAcceptableOrUnknown(data['place_id']!, _placeIdMeta));
+    } else if (isInserting) {
+      context.missing(_placeIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Image map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Image(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      placeId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}place_id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}name'])!,
+    );
+  }
+
+  @override
+  $ImagesTable createAlias(String alias) {
+    return $ImagesTable(attachedDatabase, alias);
+  }
+}
+
+class Image extends DataClass implements Insertable<Image> {
+  final int id;
+  final int placeId;
+  final Uint8List name;
+  const Image({required this.id, required this.placeId, required this.name});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['place_id'] = Variable<int>(placeId);
+    map['name'] = Variable<Uint8List>(name);
+    return map;
+  }
+
+  ImagesCompanion toCompanion(bool nullToAbsent) {
+    return ImagesCompanion(
+      id: Value(id),
+      placeId: Value(placeId),
+      name: Value(name),
+    );
+  }
+
+  factory Image.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Image(
+      id: serializer.fromJson<int>(json['id']),
+      placeId: serializer.fromJson<int>(json['placeId']),
+      name: serializer.fromJson<Uint8List>(json['name']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'placeId': serializer.toJson<int>(placeId),
+      'name': serializer.toJson<Uint8List>(name),
+    };
+  }
+
+  Image copyWith({int? id, int? placeId, Uint8List? name}) => Image(
+        id: id ?? this.id,
+        placeId: placeId ?? this.placeId,
+        name: name ?? this.name,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Image(')
+          ..write('id: $id, ')
+          ..write('placeId: $placeId, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, placeId, $driftBlobEquality.hash(name));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Image &&
+          other.id == this.id &&
+          other.placeId == this.placeId &&
+          $driftBlobEquality.equals(other.name, this.name));
+}
+
+class ImagesCompanion extends UpdateCompanion<Image> {
+  final Value<int> id;
+  final Value<int> placeId;
+  final Value<Uint8List> name;
+  const ImagesCompanion({
+    this.id = const Value.absent(),
+    this.placeId = const Value.absent(),
+    this.name = const Value.absent(),
+  });
+  ImagesCompanion.insert({
+    this.id = const Value.absent(),
+    required int placeId,
+    required Uint8List name,
+  })  : placeId = Value(placeId),
+        name = Value(name);
+  static Insertable<Image> custom({
+    Expression<int>? id,
+    Expression<int>? placeId,
+    Expression<Uint8List>? name,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (placeId != null) 'place_id': placeId,
+      if (name != null) 'name': name,
+    });
+  }
+
+  ImagesCompanion copyWith(
+      {Value<int>? id, Value<int>? placeId, Value<Uint8List>? name}) {
+    return ImagesCompanion(
+      id: id ?? this.id,
+      placeId: placeId ?? this.placeId,
+      name: name ?? this.name,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (placeId.present) {
+      map['place_id'] = Variable<int>(placeId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<Uint8List>(name.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ImagesCompanion(')
+          ..write('id: $id, ')
+          ..write('placeId: $placeId, ')
+          ..write('name: $name')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $PlacesTable places = $PlacesTable(this);
+  late final $ImagesTable images = $ImagesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [places];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [places, images];
 }

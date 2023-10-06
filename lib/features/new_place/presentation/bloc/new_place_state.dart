@@ -3,7 +3,7 @@ part of 'new_place_bloc.dart';
 @immutable
 class NewPlaceState {
   const NewPlaceState({
-    this.status = NewPlaceStatus.none,
+    this.status = CreatePlaceStatus.none,
     this.imagePathList = const [],
     this.category,
     this.name = '',
@@ -12,7 +12,7 @@ class NewPlaceState {
     this.description = '',
   });
 
-  final NewPlaceStatus status;
+  final CreatePlaceStatus status;
   final List<String> imagePathList;
   final Category? category;
   final String name;
@@ -39,7 +39,7 @@ class NewPlaceState {
       description.isNotEmpty;
 
   NewPlaceState copyWith({
-    NewPlaceStatus? status,
+    CreatePlaceStatus? status,
     List<String>? imagePathList,
     Category? category,
     String? name,
@@ -59,4 +59,4 @@ class NewPlaceState {
   }
 }
 
-enum NewPlaceStatus { none, processing, created, failed }
+enum CreatePlaceStatus { none, processing, created, failed }
