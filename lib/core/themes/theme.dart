@@ -25,9 +25,13 @@ const _textTheme = TextTheme(
     fontWeight: FontWeight.w500,
   ),
   displaySmall: TextStyle(
-    color: AppColors.lightGrey,
     fontSize: 14,
     fontWeight: FontWeight.w700,
+  ),
+  labelMedium: TextStyle(
+    color: AppColors.black,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
   ),
   labelSmall: TextStyle(
     color: AppColors.lightGrey,
