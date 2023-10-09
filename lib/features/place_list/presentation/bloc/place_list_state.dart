@@ -7,11 +7,16 @@ class PlaceListState {
     this.status = LoadPlaceListStatus.none,
   });
 
-  final List<Place> placeList;
+  final List<PlaceEntity> placeList;
   final LoadPlaceListStatus status;
-  PlaceListState copyWith({List<Place>? placeList}) {
+
+  PlaceListState copyWith({
+    List<PlaceEntity>? placeList,
+    LoadPlaceListStatus? status,
+  }) {
     return PlaceListState(
       placeList: placeList ?? this.placeList,
+      status: status ?? this.status,
     );
   }
 }

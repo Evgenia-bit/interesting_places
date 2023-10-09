@@ -3,5 +3,8 @@ part of 'place_list_bloc.dart';
 @immutable
 sealed class PlaceListEvent {}
 
+class GetPlaceListEvent extends PlaceListEvent {
+  GetPlaceListEvent({this.completer});
 
-class GetPlaceListEvent extends PlaceListEvent {}
+  final Completer? completer;
+}

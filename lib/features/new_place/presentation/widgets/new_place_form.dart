@@ -7,6 +7,7 @@ import 'package:interesting_places/core/widgets/app_button.dart';
 import 'package:interesting_places/features/new_place/presentation/widgets/image_row.dart';
 import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
 import 'package:interesting_places/features/new_place/presentation/widgets/choose_category_button.dart.dart';
+import 'package:interesting_places/features/place_list/presentation/bloc/place_list_bloc.dart';
 
 class NewPlaceForm extends StatelessWidget {
   const NewPlaceForm({super.key});
@@ -188,12 +189,17 @@ class _CreateButton extends StatelessWidget {
             ),
           );
         } else if (state.status == CreatePlaceStatus.created) {
+          context.read<NewPlaceBloc>().add(ClearFormEvent());
+          context.read<PlaceListBloc>().add(GetPlaceListEvent());
           context.router.pop();
         }
       },
       child: Builder(builder: (context) {
-        final (status, isValid) = context.select(
-            (NewPlaceBloc bloc) => (bloc.state.status, bloc.state.isValid));
+        final (status, isValid) = context.select((NewPlaceBloc bloc) => (
+              bloc.state.status,
+              bloc.state.isValid,
+            ));
+
         return AppButton(
           onPressed: isValid
               ? () {
@@ -201,7 +207,10 @@ class _CreateButton extends StatelessWidget {
                 }
               : null,
           child: status == CreatePlaceStatus.processing
-              ? const CircularProgressIndicator()
+              ? Transform.scale(
+                  scale: 0.5,
+                  child: const CircularProgressIndicator(),
+                )
               : Text('Создать'.toUpperCase()),
         );
       }),

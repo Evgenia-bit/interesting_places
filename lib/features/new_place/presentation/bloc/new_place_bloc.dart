@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interesting_places/core/data/models/category.dart';
@@ -18,6 +17,7 @@ class NewPlaceBloc extends Bloc<NewPlaceEvent, NewPlaceState> {
     on<UpdatePlaceStateEvent>(_handleUpdateEvent);
     on<AddImageToPlaceStateEvent>(_handleAddImageToPlaceStateEvent);
     on<DeleteImageFromPlaceStateEvent>(_handleDeleteImageFromPlaceStateEvent);
+    on<ClearFormEvent>(_handleCrearFormEvent);
   }
 
   final NewPlaceRepository _repository;
@@ -82,5 +82,12 @@ class NewPlaceBloc extends Bloc<NewPlaceEvent, NewPlaceState> {
         imagePathList: imagePathList,
       ),
     );
+  }
+
+  void _handleCrearFormEvent(
+    ClearFormEvent event,
+    Emitter<NewPlaceState> emit,
+  ) {
+    emit(_initialState);
   }
 }
