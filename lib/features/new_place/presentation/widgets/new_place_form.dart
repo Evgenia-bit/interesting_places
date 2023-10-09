@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
-import 'package:interesting_places/features/create_new_place/presentation/widgets/choose_category_button.dart.dart';
-import 'package:interesting_places/features/image/presentation/widgets/image_row.dart';
+import 'package:interesting_places/features/new_place/presentation/widgets/image_row.dart';
+import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
+import 'package:interesting_places/features/new_place/presentation/widgets/choose_category_button.dart.dart';
 
-class CreateNewPlaceForm extends StatelessWidget {
-  const CreateNewPlaceForm({super.key});
+class NewPlaceForm extends StatelessWidget {
+  const NewPlaceForm({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final newPlaceBloc = context.watch<NewPlaceBloc>();
 
     return CustomScrollView(
       slivers: [
@@ -34,8 +37,11 @@ class CreateNewPlaceForm extends StatelessWidget {
                   style: textTheme.labelSmall,
                 ),
                 const SizedBox(height: 12),
-                const _Field(
+                _Field(
                   borderColor: AppColors.green,
+                  onChanged: (v) {
+                    newPlaceBloc.add(UpdatePlaceStateEvent(name: v));
+                  },
                 ),
                 const SizedBox(height: 24),
                 const _CoordinatesRow(),
@@ -46,12 +52,23 @@ class CreateNewPlaceForm extends StatelessWidget {
                   style: textTheme.labelSmall,
                 ),
                 const SizedBox(height: 12),
-                const _Field(
+                _Field(
                   maxLines: 3,
                   borderColor: AppColors.lightGrey,
+                  onChanged: (v) {
+                    newPlaceBloc.add(UpdatePlaceStateEvent(description: v));
+                  },
                 ),
+                const SizedBox(height: 28),
                 const Spacer(),
-                const AppButton(text: 'Создать'),
+                AppButton(
+                  text: 'Создать',
+                  onPressed: newPlaceBloc.state.isValid
+                      ? () {
+                          newPlaceBloc.add(CreatePlaceEvent());
+                        }
+                      : null,
+                ),
               ],
             ),
           ),
@@ -62,11 +79,16 @@ class CreateNewPlaceForm extends StatelessWidget {
 }
 
 class _CoordinatesRow extends StatelessWidget {
-  const _CoordinatesRow({super.key});
+  const _CoordinatesRow({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final newPlaceBloc = context.watch<NewPlaceBloc>();
+    final state = newPlaceBloc.state;
+
     return Row(
       children: [
         Expanded(
@@ -78,8 +100,14 @@ class _CoordinatesRow extends StatelessWidget {
                 style: textTheme.labelSmall,
               ),
               const SizedBox(height: 12),
-              const _Field(
-                borderColor: AppColors.green,
+              _Field(
+                borderColor: state.latitude.isEmpty || state.isValidLatitude
+                    ? AppColors.green
+                    : AppColors.red,
+                onChanged: (v) {
+                  newPlaceBloc.add(UpdatePlaceStateEvent(latitude: v));
+                },
+                keyboardType: TextInputType.number,
               ),
             ],
           ),
@@ -94,8 +122,15 @@ class _CoordinatesRow extends StatelessWidget {
                 style: textTheme.labelSmall,
               ),
               const SizedBox(height: 12),
-              const _Field(
-                borderColor: AppColors.green,
+              _Field(
+                borderColor: state.longitude.isEmpty ||
+                        newPlaceBloc.state.isValidLongitude
+                    ? AppColors.green
+                    : AppColors.red,
+                onChanged: (v) {
+                  newPlaceBloc.add(UpdatePlaceStateEvent(longitude: v));
+                },
+                keyboardType: TextInputType.number,
               ),
             ],
           ),
@@ -134,19 +169,25 @@ class _MapButton extends StatelessWidget {
 }
 
 class _Field extends StatelessWidget {
-  final Color borderColor;
-  final int? maxLines;
-
   const _Field({
     super.key,
     required this.borderColor,
     this.maxLines,
+    required this.onChanged,
+    this.keyboardType,
   });
+
+  final int? maxLines;
+  final void Function(String) onChanged;
+  final TextInputType? keyboardType;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: keyboardType,
       maxLines: maxLines,
+      onChanged: onChanged,
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),

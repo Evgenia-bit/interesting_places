@@ -1,4 +1,4 @@
-part of 'image_bloc.dart';
+part of 'add_image_bloc.dart';
 
 @immutable
 sealed class ImageEvent {}

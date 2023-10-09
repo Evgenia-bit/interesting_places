@@ -8,4 +8,5 @@ class AppColors {
   static const grey = Color.fromRGBO(124, 126, 146, 1);
   static const lightGrey = Color.fromRGBO(124, 126, 146, 0.56);
   static const lightestGrey = Color.fromRGBO(245, 245, 245, 1);
+  static const red = Color.fromRGBO(239, 67, 67, 0.4);
 }
