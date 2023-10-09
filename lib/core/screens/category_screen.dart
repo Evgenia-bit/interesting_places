@@ -1,8 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interesting_places/core/data/category.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
+import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
+
 @RoutePage()
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -13,6 +16,13 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   Category? activeCategory;
+
+  @override
+  void initState() {
+    activeCategory = context.read<NewPlaceBloc>().state.category;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -55,6 +65,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
               text: 'Сохранить',
               onPressed: activeCategory != null
                   ? () {
+                      context.read<NewPlaceBloc>().add(
+                            UpdatePlaceStateEvent(category: activeCategory),
+                          );
                       context.router.pop();
                     }
                   : null,
