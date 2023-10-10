@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:interesting_places/core/data/models/category.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
+import 'package:interesting_places/features/place_list/presentation/bloc/place_list_bloc.dart';
+import 'package:provider/provider.dart';
 
-class CategoryGrid extends StatefulWidget {
+class CategoryGrid extends StatelessWidget {
   const CategoryGrid({super.key});
 
   @override
-  State<CategoryGrid> createState() => _CategoryGridState();
-}
-
-class _CategoryGridState extends State<CategoryGrid> {
-  final activeCategories = List.filled(Category.values.length, false);
-
-  @override
   Widget build(BuildContext context) {
+    final placeListBloc = context.watch<PlaceListBloc>();
+    final activeCategories = placeListBloc.state.activeCategories;
+
     return Expanded(
       child: GridView.count(
         crossAxisCount: 3,
@@ -25,9 +23,7 @@ class _CategoryGridState extends State<CategoryGrid> {
                 category: c.$2,
                 isActive: activeCategories[c.$1],
                 onPressed: () {
-                  setState(() {
-                    activeCategories[c.$1] = !activeCategories[c.$1];
-                  });
+                  placeListBloc.add(SetFilterCategory(categoryId: c.$1));
                 },
               ),
             )
@@ -42,11 +38,12 @@ class _CategoryGridItem extends StatelessWidget {
   final bool isActive;
   final VoidCallback onPressed;
 
-  const _CategoryGridItem(
-      {super.key,
-      required this.category,
-      required this.isActive,
-      required this.onPressed});
+  const _CategoryGridItem({
+    super.key,
+    required this.category,
+    required this.isActive,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {

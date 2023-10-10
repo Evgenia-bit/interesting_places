@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
-import 'package:interesting_places/features/place_list/domain/entity/place_entity.dart';
+import 'package:interesting_places/core/data/models/place_entity.dart';
 import 'package:interesting_places/features/place_list/presentation/bloc/place_list_bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +11,7 @@ class PlaceList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<PlaceListBloc>().state;
+    final placeList = state.filteredPlaces;
 
     if (state.status == LoadPlaceListStatus.processing) {
       return const SliverToBoxAdapter(
@@ -28,7 +29,7 @@ class PlaceList extends StatelessWidget {
       );
     }
 
-    if (state.placeList.isEmpty) {
+    if (placeList.isEmpty) {
       return const SliverToBoxAdapter(
         child: Center(
           child: Text('Список мест пуст'),
@@ -37,11 +38,11 @@ class PlaceList extends StatelessWidget {
     }
 
     return SliverList.separated(
-      itemCount: state.placeList.length,
+      itemCount: placeList.length,
       separatorBuilder: (context, index) => const SizedBox(height: 24),
       itemBuilder: (context, index) {
         return ListItem(
-          place: state.placeList[index],
+          place: placeList[index],
         );
       },
     );
