@@ -9,7 +9,6 @@ class GetPlaceListEvent extends PlaceListEvent {
   final Completer? completer;
 }
 
-
 class SetFilterCategory extends PlaceListEvent {
   final int categoryId;
 
@@ -25,3 +24,5 @@ class SetFilterDistance extends PlaceListEvent {
     required this.distance,
   });
 }
+
+class ClearFilterEvent extends PlaceListEvent {}

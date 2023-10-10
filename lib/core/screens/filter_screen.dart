@@ -22,7 +22,9 @@ class FilterScreen extends StatelessWidget {
         leading: const AppBarBackButton(),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<PlaceListBloc>().add(ClearFilterEvent());
+            },
             child: Text(
               'Очистить',
               style: Theme.of(context)
