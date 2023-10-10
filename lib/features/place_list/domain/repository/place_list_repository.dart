@@ -12,7 +12,7 @@ class PlaceListRepository {
 
   final AppDatabase _database;
 
-  Future<List<PlaceEntity>> getPlaceList() async {
+  Future<List<PlaceEntity>> getPlaceList(Position? currentPosition) async {
     final placeList = await (_database.select(_database.places)
           ..orderBy(
             [
@@ -20,21 +20,22 @@ class PlaceListRepository {
             ],
           ))
         .get();
-        
+
     final imageList = await _database.select(_database.images).get();
 
-    return placeList.map(
-      (place) {
-        return PlaceEntity(
-          imageList: _getImageBlobListForPlace(imageList, place.id),
-          name: place.name,
-          description: place.description,
-          category: place.category,
-          latitude: place.latitude,
-          longitude: place.longitude,
-        );
-      },
-    ).toList();
+    return placeList
+        .map(
+          (place) => PlaceEntity(
+            imageList: _getImageBlobListForPlace(imageList, place.id),
+            name: place.name,
+            description: place.description,
+            category: place.category,
+            latitude: place.latitude,
+            longitude: place.longitude,
+            distance: _getDistance(place, currentPosition),
+          ),
+        )
+        .toList();
   }
 
   List<Uint8List> _getImageBlobListForPlace(
@@ -50,28 +51,15 @@ class PlaceListRepository {
     return imageBlobList;
   }
 
-  void sortPlaceListByDistance(
-    List<PlaceEntity> placeList,
-    Position currentPosition,
-  ) {
-    placeList.sort(
-      (place1, place2) {
-        final place1Distance = Geolocator.distanceBetween(
-          place1.latitude,
-          place1.longitude,
-          currentPosition.latitude,
-          currentPosition.longitude,
-        );
-
-        final place2Distance = Geolocator.distanceBetween(
-          place2.latitude,
-          place2.longitude,
-          currentPosition.latitude,
-          currentPosition.longitude,
-        );
-
-        return place1Distance.compareTo(place2Distance);
-      },
-    );
+  double? _getDistance(Place place, Position? currentPosition) {
+    if (currentPosition != null) {
+      return Geolocator.distanceBetween(
+        place.latitude,
+        place.longitude,
+        currentPosition.latitude,
+        currentPosition.longitude,
+      ) / 1000;
+    }
+    return null;
   }
 }

@@ -17,3 +17,11 @@ class SetFilterCategory extends PlaceListEvent {
     required this.categoryId,
   });
 }
+
+class SetFilterDistance extends PlaceListEvent {
+  final RangeValues distance;
+
+  SetFilterDistance({
+    required this.distance,
+  });
+}
