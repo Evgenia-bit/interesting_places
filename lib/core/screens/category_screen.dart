@@ -26,7 +26,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -111,7 +111,10 @@ class _CategoryListItem extends StatelessWidget {
             children: [
               Text(
                 name,
-                style: Theme.of(context).textTheme.labelMedium,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelMedium
+                    ?.copyWith(color: AppColors.black),
               ),
               if (isActive)
                 const Icon(

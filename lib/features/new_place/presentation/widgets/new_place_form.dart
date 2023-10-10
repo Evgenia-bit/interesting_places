@@ -16,8 +16,6 @@ class NewPlaceForm extends StatelessWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final placeBloc = context.read<NewPlaceBloc>();
-    final isValid = context.select((NewPlaceBloc bloc) => bloc.state.isValid);
-
     return CustomScrollView(
       slivers: [
         const SliverToBoxAdapter(child: ImageRow()),
@@ -64,7 +62,7 @@ class NewPlaceForm extends StatelessWidget {
                 ),
                 const SizedBox(height: 28),
                 const Spacer(),
-                _CreateButton(),
+                const _CreateButton(),
               ],
             ),
           ),
@@ -190,12 +188,7 @@ class _CreateButton extends StatelessWidget {
             ),
           );
         } else if (state.status == CreatePlaceStatus.created) {
-          //TODO: переход на страницу со списком мест
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Место успешно создано'),
-            ),
-          );
+          context.router.pop();
         }
       },
       child: Builder(builder: (context) {

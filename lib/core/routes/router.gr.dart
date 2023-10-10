@@ -33,6 +33,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const NewPlaceScreen(),
       );
     },
+    PlaceListRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PlaceListScreen(),
+      );
+    },
   };
 }
 
@@ -74,6 +80,20 @@ class NewPlaceRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'NewPlaceRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PlaceListScreen]
+class PlaceListRoute extends PageRouteInfo<void> {
+  const PlaceListRoute({List<PageRouteInfo>? children})
+      : super(
+          PlaceListRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PlaceListRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
