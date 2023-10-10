@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interesting_places/core/data/models/category.dart';
-import 'package:interesting_places/core/data/models/place_entity.dart';
+import 'package:interesting_places/features/place_list/domain/entity/place_entity.dart';
 import 'package:interesting_places/features/get_current_position/domain/repository/get_current_position_repository.dart';
 import 'package:interesting_places/features/place_list/domain/repository/place_list_repository.dart';
 

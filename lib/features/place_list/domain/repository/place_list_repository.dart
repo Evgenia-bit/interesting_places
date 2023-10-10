@@ -1,9 +1,8 @@
 import 'package:drift/drift.dart';
-import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:interesting_places/core/data/database/database.dart';
-import 'package:interesting_places/core/data/models/place_entity.dart';
+import 'package:interesting_places/features/place_list/domain/entity/place_entity.dart';
 
 @Injectable()
 class PlaceListRepository {
