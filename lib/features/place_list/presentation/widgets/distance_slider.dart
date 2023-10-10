@@ -32,7 +32,7 @@ class DistanceSlider extends StatelessWidget {
               ),
             ),
             Text(
-              'от ${distanceFilter.start} до ${distanceFilter.end} км',
+              'от ${distanceFilter.start.toInt()} до ${distanceFilter.end.toInt()} км',
               style: textTheme.labelMedium?.copyWith(
                 color: AppColors.grey,
               ),
@@ -55,7 +55,7 @@ class DistanceSlider extends StatelessWidget {
             min: distanceLimit.start,
             max: distanceLimit.end,
             onChanged: (v) {
-              
+
               context.read<PlaceListBloc>().add(SetFilterDistance(distance: v));
             },
           ),
