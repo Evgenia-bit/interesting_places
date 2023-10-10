@@ -39,7 +39,6 @@ const _textTheme = TextTheme(
     fontWeight: FontWeight.w400,
   ),
   labelSmall: TextStyle(
-    color: AppColors.lightGrey,
     fontSize: 12,
     fontWeight: FontWeight.w400,
   ),

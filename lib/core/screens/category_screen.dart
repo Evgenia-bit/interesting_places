@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interesting_places/core/data/models/category.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
+import 'package:interesting_places/core/widgets/custom_back_button.dart';
 import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
 
 @RoutePage()
@@ -33,14 +34,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           'Категория',
           style: textTheme.headlineSmall,
         ),
-        leading: IconButton(
-          onPressed: () => context.router.pop(),
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.black,
-            size: 24,
-          ),
-        ),
+        leading: const AppBarBackButton()
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:interesting_places/core/routes/router.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 
 class SearchField extends StatelessWidget {
@@ -19,7 +21,9 @@ class SearchField extends StatelessWidget {
           ),
           suffixIcon: IconButton(
             iconSize: 24,
-            onPressed: () {},
+            onPressed: () {
+              context.router.push(const FilterRoute());
+            },
             style: const ButtonStyle(
               padding: MaterialStatePropertyAll(EdgeInsets.zero),
             ),

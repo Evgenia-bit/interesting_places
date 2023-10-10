@@ -14,9 +14,11 @@ class NewPlaceForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
+    final labelSmall = Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: AppColors.lightGrey,
+        );
     final placeBloc = context.read<NewPlaceBloc>();
+
     return CustomScrollView(
       slivers: [
         const SliverToBoxAdapter(child: ImageRow()),
@@ -30,13 +32,13 @@ class NewPlaceForm extends StatelessWidget {
               children: [
                 Text(
                   'Категория'.toUpperCase(),
-                  style: textTheme.labelSmall,
+                  style: labelSmall,
                 ),
                 const ChooseCategoryButton(),
                 const SizedBox(height: 24),
                 Text(
                   'Название'.toUpperCase(),
-                  style: textTheme.labelSmall,
+                  style: labelSmall,
                 ),
                 const SizedBox(height: 12),
                 _Field(
@@ -51,7 +53,7 @@ class NewPlaceForm extends StatelessWidget {
                 const SizedBox(height: 24),
                 Text(
                   'Описание'.toUpperCase(),
-                  style: textTheme.labelSmall,
+                  style: labelSmall,
                 ),
                 const SizedBox(height: 12),
                 _Field(
@@ -80,7 +82,9 @@ class _CoordinatesRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final labelSmall = Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: AppColors.lightGrey,
+        );
     final placeBloc = context.read<NewPlaceBloc>();
 
     final (latitude, longitude, isValidLatitude, isValidLongitude) =
@@ -101,7 +105,7 @@ class _CoordinatesRow extends StatelessWidget {
             children: [
               Text(
                 'Широта'.toUpperCase(),
-                style: textTheme.labelSmall,
+                style: labelSmall,
               ),
               const SizedBox(height: 12),
               _Field(
@@ -124,7 +128,7 @@ class _CoordinatesRow extends StatelessWidget {
             children: [
               Text(
                 'Долгота'.toUpperCase(),
-                style: textTheme.labelSmall,
+                style: labelSmall,
               ),
               const SizedBox(height: 12),
               _Field(
