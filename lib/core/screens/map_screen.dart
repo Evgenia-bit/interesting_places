@@ -63,7 +63,9 @@ class _MapScreenState extends State<MapScreen> {
               padding: const EdgeInsets.all(16),
               child: Text(
                 'потяните карту чтобы выбрать правильное местоположение',
-                style: textTheme.bodySmall,
+                style: textTheme.bodySmall?.copyWith(
+                  color: AppColors.grey,
+                ),
               ),
             ),
           ),

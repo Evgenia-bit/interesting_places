@@ -77,8 +77,13 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
 
                 return completer.future;
               },
-              builder: (context, refreshState, pulledExtent,
-                  refreshTriggerPullDistance, refreshIndicatorExtent) {
+              builder: (
+                context,
+                refreshState,
+                pulledExtent,
+                refreshTriggerPullDistance,
+                refreshIndicatorExtent,
+              ) {
                 return Padding(
                   padding: const EdgeInsets.only(top: 150),
                   child: CupertinoSliverRefreshControl.buildRefreshIndicator(

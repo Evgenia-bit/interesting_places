@@ -20,6 +20,11 @@ const _textTheme = TextTheme(
     fontSize: 32,
     fontWeight: FontWeight.w700,
   ),
+  headlineMedium: TextStyle(
+    color: AppColors.black,
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+  ),
   headlineSmall: TextStyle(
     color: AppColors.black,
     fontSize: 18,
@@ -43,7 +48,6 @@ const _textTheme = TextTheme(
     fontWeight: FontWeight.w400,
   ),
   bodySmall: TextStyle(
-    color: AppColors.grey,
     fontSize: 14,
     fontWeight: FontWeight.w400,
   ),
