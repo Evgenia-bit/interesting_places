@@ -93,10 +93,7 @@ class _MapState extends State<_Map> {
   @override
   void initState() {
     final placeState = context.read<NewPlaceBloc>().state;
-    if (placeState.latitude.isNotEmpty &&
-        placeState.isValidLatitude &&
-        placeState.longitude.isNotEmpty &&
-        placeState.isValidLongitude) {
+    if (placeState.isValidLatitude && placeState.isValidLongitude) {
       _initialLatitude = double.tryParse(placeState.latitude);
       _initialLongitude = double.tryParse(placeState.longitude);
     } else {

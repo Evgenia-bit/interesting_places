@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 
 class AppButton extends StatelessWidget {
-  final String text;
+  final Widget child;
   final VoidCallback? onPressed;
-  const AppButton({super.key, required this.text, this.onPressed});
+  const AppButton({super.key, required this.child, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +39,7 @@ class AppButton extends StatelessWidget {
           ),
         ),
         onPressed: onPressed,
-        child: Text(
-          text.toUpperCase(),
-        ),
+        child: child,
       ),
     );
   }

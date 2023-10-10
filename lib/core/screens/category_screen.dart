@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:interesting_places/core/data/category.dart';
+import 'package:interesting_places/core/data/models/category.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
 import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
@@ -62,7 +62,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 .toList(),
             const Spacer(),
             AppButton(
-              text: 'Сохранить',
               onPressed: activeCategory != null
                   ? () {
                       context.read<NewPlaceBloc>().add(
@@ -71,6 +70,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       context.router.pop();
                     }
                   : null,
+              child: Text('Сохранить'.toUpperCase()),
             )
           ],
         ),
