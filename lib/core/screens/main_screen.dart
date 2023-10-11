@@ -13,9 +13,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final SliverOverlapAbsorberHandle titleHandle = SliverOverlapAbsorberHandle();
-  final SliverOverlapAbsorberHandle searchFieldHandle =
-      SliverOverlapAbsorberHandle();
+  final titleHandle = SliverOverlapAbsorberHandle();
+  final searchFieldHandle = SliverOverlapAbsorberHandle();
 
   @override
   Widget build(BuildContext context) {
