@@ -14,18 +14,20 @@ class PlaceDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: SingleChildScrollView(
-        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
+            SizedBox(
+              height: screenHeight / 2,
               child: InkWell(
                 onTap: () {
                   showDialog(
                     context: context,
+                    useSafeArea: false,
                     builder: (context) {
                       return ImageGallery(
                         imageList: place.imageList,
@@ -38,32 +40,30 @@ class PlaceDetailsScreen extends StatelessWidget {
                     : SingleImage(imageData: place.imageList.first),
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      place.name,
-                      style: textTheme.headlineMedium,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    place.name,
+                    style: textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    place.category.name,
+                    style: textTheme.displaySmall?.copyWith(
+                      color: AppColors.black,
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      place.category.name,
-                      style: textTheme.displaySmall?.copyWith(
-                        color: AppColors.black,
-                      ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    place.description,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: AppColors.black,
                     ),
-                    const SizedBox(height: 24),
-                    Text(
-                      place.description,
-                      style: textTheme.bodySmall?.copyWith(
-                        color: AppColors.black,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
