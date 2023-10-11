@@ -11,6 +11,7 @@ class PlaceList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<PlaceListBloc>().state;
+    final placeList = state.filteredPlaces;
 
     if (state.status == LoadPlaceListStatus.processing) {
       return const SliverToBoxAdapter(
@@ -28,7 +29,7 @@ class PlaceList extends StatelessWidget {
       );
     }
 
-    if (state.placeList.isEmpty) {
+    if (placeList.isEmpty) {
       return const SliverToBoxAdapter(
         child: Center(
           child: Text('Список мест пуст'),
@@ -37,11 +38,11 @@ class PlaceList extends StatelessWidget {
     }
 
     return SliverList.separated(
-      itemCount: state.placeList.length,
+      itemCount: placeList.length,
       separatorBuilder: (context, index) => const SizedBox(height: 24),
       itemBuilder: (context, index) {
         return ListItem(
-          place: state.placeList[index],
+          place: placeList[index],
         );
       },
     );

@@ -8,3 +8,12 @@ class GetPlaceListEvent extends PlaceListEvent {
 
   final Completer? completer;
 }
+
+
+class SetFilterCategory extends PlaceListEvent {
+  final int categoryId;
+
+  SetFilterCategory({
+    required this.categoryId,
+  });
+}

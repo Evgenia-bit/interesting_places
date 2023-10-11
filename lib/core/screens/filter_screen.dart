@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:interesting_places/core/data/models/category.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
 import 'package:interesting_places/core/widgets/custom_back_button.dart';
+import 'package:interesting_places/features/place_list/presentation/bloc/place_list_bloc.dart';
 import 'package:interesting_places/features/place_list/presentation/widgets/category_grid.dart';
 import 'package:interesting_places/features/place_list/presentation/widgets/distance_slider.dart';
+import 'package:provider/provider.dart';
 
 @RoutePage()
 class FilterScreen extends StatelessWidget {
@@ -49,10 +49,7 @@ class FilterScreen extends StatelessWidget {
             const SizedBox(height: 50),
             const DistanceSlider(),
             const Spacer(),
-            _ShowButton(
-              count: 10,
-              onPressed: () {},
-            )
+            const _ShowButton(),
           ],
         ),
       ),
@@ -61,18 +58,19 @@ class FilterScreen extends StatelessWidget {
 }
 
 class _ShowButton extends StatelessWidget {
-  final int count;
-  final VoidCallback onPressed;
-  const _ShowButton({
-    super.key,
-    required this.count,
-    required this.onPressed,
-  });
+  const _ShowButton({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final count = context.select(
+      (PlaceListBloc bloc) => bloc.state.filteredPlaces.length,
+    );
     return AppButton(
-      onPressed: count == 0 ? null : onPressed,
+      onPressed: count == 0
+          ? null
+          : () {
+              context.router.pop();
+            },
       child: Text('ПОКАЗАТЬ ($count)'),
     );
   }

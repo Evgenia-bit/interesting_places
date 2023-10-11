@@ -1,5 +1,4 @@
 import 'package:drift/drift.dart';
-import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:interesting_places/core/data/database/database.dart';
