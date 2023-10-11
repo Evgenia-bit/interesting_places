@@ -24,8 +24,8 @@ class NewPlaceRepository {
     final placeId = await _database.into(_database.places).insert(
           PlacesCompanion.insert(
             category: category,
-            name: '',
-            description: '',
+            name: name,
+            description: description,
             latitude: latitude,
             longitude: longitude,
           ),

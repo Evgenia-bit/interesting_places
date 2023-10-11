@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:interesting_places/features/get_current_position/domain/repository/get_current_position_repository.dart';
 
 part 'get_current_position_event.dart';
 part 'get_current_position_state.dart';
@@ -17,9 +18,14 @@ const _defaultState = GetCurrentPositionState(
 
 class GetCurrentPositionBloc
     extends Bloc<GetCurrentPositionEvent, GetCurrentPositionState> {
-  GetCurrentPositionBloc() : super(_initialState) {
+  GetCurrentPositionBloc({
+    required PositionRepository repository,
+  })  : _repository = repository,
+        super(_initialState) {
     on<GetCurrentPositionEvent>(_handleGetCurrentPosition);
   }
+
+  final PositionRepository _repository;
 
   Future<void> _handleGetCurrentPosition(
     GetCurrentPositionEvent _,
@@ -50,11 +56,11 @@ class GetCurrentPositionBloc
       return;
     }
 
-    final position = await Geolocator.getCurrentPosition();
+    final position = await _repository.getCurrentPosition();
 
     emit(GetCurrentPositionState(
-      latitude: position.latitude,
-      longitude: position.longitude,
+      latitude: position?.latitude,
+      longitude: position?.longitude,
       status: GetCurrentPositionStatus.success,
     ));
 

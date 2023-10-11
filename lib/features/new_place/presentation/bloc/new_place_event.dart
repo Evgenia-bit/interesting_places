@@ -22,16 +22,15 @@ class UpdatePlaceStateEvent extends NewPlaceEvent {
 }
 
 class AddImageToPlaceStateEvent extends NewPlaceEvent {
-  AddImageToPlaceStateEvent({
-    required this.path
-  });
+  AddImageToPlaceStateEvent({required this.path});
   final String path;
 }
 
 class DeleteImageFromPlaceStateEvent extends NewPlaceEvent {
-  DeleteImageFromPlaceStateEvent({
-    required this.path
-  });
-    final String path;
+  DeleteImageFromPlaceStateEvent({required this.path});
+  final String path;
 }
 
+class ClearFormEvent extends NewPlaceEvent {
+  ClearFormEvent();
+}

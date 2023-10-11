@@ -15,8 +15,11 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:image_picker/image_picker.dart' as _i4;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:interesting_places/core/data/database/database.dart' as _i3;
-import 'package:interesting_places/core/di/di.dart' as _i7;
+import 'package:interesting_places/core/di/di.dart' as _i9;
+import 'package:interesting_places/features/get_current_position/domain/repository/get_current_position_repository.dart'
+    as _i8;
 import 'package:interesting_places/features/new_place/domain/repository/new_place_repository.dart'
+
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -38,10 +41,13 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i5.ImagePicker>(() => appModule.imagePicker);
     gh.factory<_i6.NewPlaceRepository>(
         () => _i6.NewPlaceRepository(database: gh<_i3.AppDatabase>()));
+    gh.factory<_i7.PlaceListRepository>(
+        () => _i7.PlaceListRepository(database: gh<_i3.AppDatabase>()));
+    gh.factory<_i8.PositionRepository>(() => _i8.PositionRepository());
 
     return this;
   }
 }
 
-class _$AppModule extends _i7.AppModule {}
 
+class _$AppModule extends _i7.AppModule {}

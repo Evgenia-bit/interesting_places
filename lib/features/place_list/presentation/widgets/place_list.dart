@@ -1,28 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
+import 'package:interesting_places/features/place_list/domain/entity/place_entity.dart';
+import 'package:interesting_places/features/place_list/presentation/bloc/place_list_bloc.dart';
+import 'package:provider/provider.dart';
 
 class PlaceList extends StatelessWidget {
   const PlaceList({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<PlaceListBloc>().state;
+
+    if (state.status == LoadPlaceListStatus.processing) {
+      return const SliverToBoxAdapter(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (state.status == LoadPlaceListStatus.failed) {
+      return const SliverToBoxAdapter(
+        child: Center(
+          child: Text('Произошла ошибка при загрузке данных'),
+        ),
+      );
+    }
+
+    if (state.placeList.isEmpty) {
+      return const SliverToBoxAdapter(
+        child: Center(
+          child: Text('Список мест пуст'),
+        ),
+      );
+    }
+
     return SliverList.separated(
-      itemCount: 10,
+      itemCount: state.placeList.length,
       separatorBuilder: (context, index) => const SizedBox(height: 24),
       itemBuilder: (context, index) {
-        return const ListItem();
+        return ListItem(
+          place: state.placeList[index],
+        );
       },
     );
   }
 }
 
 class ListItem extends StatelessWidget {
-  const ListItem({super.key});
+  final PlaceEntity place;
+  const ListItem({super.key, required this.place});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Column(
@@ -30,10 +63,10 @@ class ListItem extends StatelessWidget {
           SizedBox(
             height: 96,
             child: DecoratedBox(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage('assets/images/photo_2.png'),
+                  image: MemoryImage(place.imageList.first),
                 ),
               ),
               child: Align(
@@ -42,7 +75,7 @@ class ListItem extends StatelessWidget {
                   children: [
                     const SizedBox(width: 16),
                     Text(
-                      'музей',
+                      place.category.name,
                       style: textTheme.displaySmall
                           ?.copyWith(color: AppColors.white),
                     ),
@@ -56,25 +89,32 @@ class ListItem extends StatelessWidget {
               ),
             ),
           ),
-          ColoredBox(
-            color: AppColors.lightestGrey,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Воронежский областной краеведческий музей',
-                    style: textTheme.displayMedium?.copyWith(
-                      color: AppColors.black,
+          SizedBox(
+            width: double.infinity,
+            child: ColoredBox(
+              color: AppColors.lightestGrey,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      place.name,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.displayMedium?.copyWith(
+                        color: AppColors.black,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'краткое описание',
-                    style: textTheme.bodySmall,
-                  ),
-                ],
+                    const SizedBox(height: 2),
+                    Text(
+                      place.description,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.bodySmall,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
