@@ -26,7 +26,6 @@ class PlaceListRepository {
     return placeList
         .map(
           (place) => PlaceEntity(
-            id: place.id,
             imageList: _getImageBlobListForPlace(imageList, place.id),
             name: place.name,
             description: place.description,
