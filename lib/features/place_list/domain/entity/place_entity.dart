@@ -3,6 +3,7 @@ import 'package:interesting_places/core/data/models/category.dart';
 
 class PlaceEntity {
   const PlaceEntity({
+    required this.id,
     required this.imageList,
     required this.name,
     required this.description,
@@ -12,6 +13,7 @@ class PlaceEntity {
     this.distance,
   });
 
+  final int id;
   final List<Uint8List> imageList;
   final String name;
   final String description;

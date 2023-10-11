@@ -21,16 +21,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const CategoryScreen(),
       );
     },
+    EmptyRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const EmptyScreen(),
+      );
+    },
     FilterRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const FilterScreen(),
       );
     },
-    MapRoute.name: (routeData) {
+    MainRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const MapScreen(),
+        child: const MainScreen(),
       );
     },
     NewPlaceRoute.name: (routeData) {
@@ -49,10 +55,22 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    PlaceListMapRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PlaceListMapScreen(),
+      );
+    },
     PlaceListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const PlaceListScreen(),
+      );
+    },
+    PlacePointMapRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PlacePointMapScreen(),
       );
     },
   };
@@ -73,6 +91,20 @@ class CategoryRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [EmptyScreen]
+class EmptyRoute extends PageRouteInfo<void> {
+  const EmptyRoute({List<PageRouteInfo>? children})
+      : super(
+          EmptyRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EmptyRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [FilterScreen]
 class FilterRoute extends PageRouteInfo<void> {
   const FilterRoute({List<PageRouteInfo>? children})
@@ -87,15 +119,15 @@ class FilterRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [MapScreen]
-class MapRoute extends PageRouteInfo<void> {
-  const MapRoute({List<PageRouteInfo>? children})
+/// [MainScreen]
+class MainRoute extends PageRouteInfo<void> {
+  const MainRoute({List<PageRouteInfo>? children})
       : super(
-          MapRoute.name,
+          MainRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'MapRoute';
+  static const String name = 'MainRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -153,6 +185,20 @@ class PlaceDetailsRouteArgs {
 }
 
 /// generated route for
+/// [PlaceListMapScreen]
+class PlaceListMapRoute extends PageRouteInfo<void> {
+  const PlaceListMapRoute({List<PageRouteInfo>? children})
+      : super(
+          PlaceListMapRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PlaceListMapRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [PlaceListScreen]
 class PlaceListRoute extends PageRouteInfo<void> {
   const PlaceListRoute({List<PageRouteInfo>? children})
@@ -162,6 +208,20 @@ class PlaceListRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'PlaceListRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PlacePointMapScreen]
+class PlacePointMapRoute extends PageRouteInfo<void> {
+  const PlacePointMapRoute({List<PageRouteInfo>? children})
+      : super(
+          PlacePointMapRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PlacePointMapRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
