@@ -158,7 +158,7 @@ class _MapButton extends StatelessWidget {
       width: double.infinity,
       child: TextButton(
         onPressed: () {
-          context.router.push(const MapRoute());
+          context.router.push(const PlacePointMapRoute());
         },
         style: const ButtonStyle(
           padding: MaterialStatePropertyAll(
