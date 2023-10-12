@@ -28,6 +28,7 @@ class PlaceListBloc extends Bloc<PlaceListEvent, PlaceListState> {
     on<GetPlaceListEvent>(_handleGetPlaceList);
     on<SetFilterCategory>(_handleSetFilterCategory);
     on<SetFilterDistance>(_handleSetFilterDistance);
+    on<ClearFilterEvent>(_handleClearFilter);
   }
 
   final PlaceListRepository _placeListRepository;
@@ -96,6 +97,17 @@ class PlaceListBloc extends Bloc<PlaceListEvent, PlaceListState> {
         event.distance.start.roundToDouble(),
         event.distance.end.roundToDouble(),
       ),
+    ));
+  }
+
+  void _handleClearFilter(
+    ClearFilterEvent event,
+    Emitter<PlaceListState> emit,
+  ) {
+    emit(state.copyWith(
+      activeCategories: List.filled(Category.values.length, false),
+      filteredPlaces: [],
+      distanceFilter: state.distanceLimit,
     ));
   }
 
