@@ -15,6 +15,11 @@ final theme = ThemeData(
 );
 
 const _textTheme = TextTheme(
+  headlineLarge: TextStyle(
+    color: AppColors.black,
+    fontSize: 32,
+    fontWeight: FontWeight.w700,
+  ),
   headlineSmall: TextStyle(
     color: AppColors.black,
     fontSize: 18,
@@ -30,12 +35,10 @@ const _textTheme = TextTheme(
     fontWeight: FontWeight.w700,
   ),
   labelMedium: TextStyle(
-    color: AppColors.black,
     fontSize: 16,
     fontWeight: FontWeight.w400,
   ),
   labelSmall: TextStyle(
-    color: AppColors.lightGrey,
     fontSize: 12,
     fontWeight: FontWeight.w400,
   ),

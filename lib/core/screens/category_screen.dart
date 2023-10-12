@@ -1,9 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:interesting_places/core/data/category.dart';
+import 'package:interesting_places/core/data/models/category.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
+import 'package:interesting_places/core/widgets/custom_back_button.dart';
 import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
 
 @RoutePage()
@@ -26,21 +27,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Категория',
           style: textTheme.headlineSmall,
         ),
-        leading: IconButton(
-          onPressed: () => context.router.pop(),
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.black,
-            size: 24,
-          ),
-        ),
+        leading: const AppBarBackButton()
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -62,7 +56,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 .toList(),
             const Spacer(),
             AppButton(
-              text: 'Сохранить',
               onPressed: activeCategory != null
                   ? () {
                       context.read<NewPlaceBloc>().add(
@@ -71,6 +64,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       context.router.pop();
                     }
                   : null,
+              child: Text('Сохранить'.toUpperCase()),
             )
           ],
         ),
@@ -111,7 +105,10 @@ class _CategoryListItem extends StatelessWidget {
             children: [
               Text(
                 name,
-                style: Theme.of(context).textTheme.labelMedium,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelMedium
+                    ?.copyWith(color: AppColors.black),
               ),
               if (isActive)
                 const Icon(

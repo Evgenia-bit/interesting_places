@@ -2,21 +2,22 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interesting_places/core/routes/router.dart';
-import 'package:interesting_places/core/screens/map_screen.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/app_button.dart';
 import 'package:interesting_places/features/new_place/presentation/widgets/image_row.dart';
 import 'package:interesting_places/features/new_place/presentation/bloc/new_place_bloc.dart';
 import 'package:interesting_places/features/new_place/presentation/widgets/choose_category_button.dart.dart';
+import 'package:interesting_places/features/place_list/presentation/bloc/place_list_bloc.dart';
 
 class NewPlaceForm extends StatelessWidget {
   const NewPlaceForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    final newPlaceBloc = context.watch<NewPlaceBloc>();
+    final labelSmall = Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: AppColors.lightGrey,
+        );
+    final placeBloc = context.read<NewPlaceBloc>();
 
     return CustomScrollView(
       slivers: [
@@ -31,19 +32,19 @@ class NewPlaceForm extends StatelessWidget {
               children: [
                 Text(
                   'Категория'.toUpperCase(),
-                  style: textTheme.labelSmall,
+                  style: labelSmall,
                 ),
                 const ChooseCategoryButton(),
                 const SizedBox(height: 24),
                 Text(
                   'Название'.toUpperCase(),
-                  style: textTheme.labelSmall,
+                  style: labelSmall,
                 ),
                 const SizedBox(height: 12),
                 _Field(
                   borderColor: AppColors.green,
                   onChanged: (v) {
-                    newPlaceBloc.add(UpdatePlaceStateEvent(name: v));
+                    placeBloc.add(UpdatePlaceStateEvent(name: v));
                   },
                 ),
                 const SizedBox(height: 24),
@@ -52,26 +53,19 @@ class NewPlaceForm extends StatelessWidget {
                 const SizedBox(height: 24),
                 Text(
                   'Описание'.toUpperCase(),
-                  style: textTheme.labelSmall,
+                  style: labelSmall,
                 ),
                 const SizedBox(height: 12),
                 _Field(
                   maxLines: 3,
                   borderColor: AppColors.lightGrey,
                   onChanged: (v) {
-                    newPlaceBloc.add(UpdatePlaceStateEvent(description: v));
+                    placeBloc.add(UpdatePlaceStateEvent(description: v));
                   },
                 ),
                 const SizedBox(height: 28),
                 const Spacer(),
-                AppButton(
-                  text: 'Создать',
-                  onPressed: newPlaceBloc.state.isValid
-                      ? () {
-                          newPlaceBloc.add(CreatePlaceEvent());
-                        }
-                      : null,
-                ),
+                const _CreateButton(),
               ],
             ),
           ),
@@ -88,11 +82,20 @@ class _CoordinatesRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final newPlaceBloc = context.watch<NewPlaceBloc>();
-    final state = newPlaceBloc.state;
-    final latitudeIsEmpty = state.latitude.isEmpty;
-    final longitudeIsEmpty = state.longitude.isEmpty;
+    final labelSmall = Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: AppColors.lightGrey,
+        );
+    final placeBloc = context.read<NewPlaceBloc>();
+
+    final (latitude, longitude, isValidLatitude, isValidLongitude) =
+        context.select(
+      (NewPlaceBloc bloc) => (
+        bloc.state.latitude,
+        bloc.state.longitude,
+        bloc.state.isValidLatitude,
+        bloc.state.isValidLongitude,
+      ),
+    );
 
     return Row(
       children: [
@@ -102,18 +105,18 @@ class _CoordinatesRow extends StatelessWidget {
             children: [
               Text(
                 'Широта'.toUpperCase(),
-                style: textTheme.labelSmall,
+                style: labelSmall,
               ),
               const SizedBox(height: 12),
               _Field(
-                borderColor: latitudeIsEmpty || state.isValidLatitude
+                borderColor: latitude.isEmpty || isValidLatitude
                     ? AppColors.green
                     : AppColors.red,
                 onChanged: (v) {
-                  newPlaceBloc.add(UpdatePlaceStateEvent(latitude: v));
+                  placeBloc.add(UpdatePlaceStateEvent(latitude: v));
                 },
                 keyboardType: TextInputType.number,
-                value: latitudeIsEmpty ? null : state.latitude,
+                value: latitude,
               ),
             ],
           ),
@@ -125,19 +128,19 @@ class _CoordinatesRow extends StatelessWidget {
             children: [
               Text(
                 'Долгота'.toUpperCase(),
-                style: textTheme.labelSmall,
+                style: labelSmall,
               ),
               const SizedBox(height: 12),
               _Field(
-                  borderColor:
-                      longitudeIsEmpty || newPlaceBloc.state.isValidLongitude
-                          ? AppColors.green
-                          : AppColors.red,
-                  onChanged: (v) {
-                    newPlaceBloc.add(UpdatePlaceStateEvent(longitude: v));
-                  },
-                  keyboardType: TextInputType.number,
-                  value: longitudeIsEmpty ? null : state.longitude),
+                borderColor: longitude.isEmpty || isValidLongitude
+                    ? AppColors.green
+                    : AppColors.red,
+                onChanged: (v) {
+                  placeBloc.add(UpdatePlaceStateEvent(longitude: v));
+                },
+                keyboardType: TextInputType.number,
+                value: longitude,
+              ),
             ],
           ),
         ),
@@ -172,6 +175,49 @@ class _MapButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _CreateButton extends StatelessWidget {
+  const _CreateButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<NewPlaceBloc, NewPlaceState>(
+      listener: (context, state) {
+        if (state.status == CreatePlaceStatus.failed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Не удалось создать место'),
+            ),
+          );
+        } else if (state.status == CreatePlaceStatus.created) {
+          context.read<NewPlaceBloc>().add(ClearFormEvent());
+          context.read<PlaceListBloc>().add(GetPlaceListEvent());
+          context.router.pop();
+        }
+      },
+      child: Builder(builder: (context) {
+        final (status, isValid) = context.select((NewPlaceBloc bloc) => (
+              bloc.state.status,
+              bloc.state.isValid,
+            ));
+
+        return AppButton(
+          onPressed: isValid
+              ? () {
+                  context.read<NewPlaceBloc>().add(CreatePlaceEvent());
+                }
+              : null,
+          child: status == CreatePlaceStatus.processing
+              ? Transform.scale(
+                  scale: 0.5,
+                  child: const CircularProgressIndicator(),
+                )
+              : Text('Создать'.toUpperCase()),
+        );
+      }),
     );
   }
 }
