@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:interesting_places/core/routes/router.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/features/place_list/domain/entity/place_entity.dart';
 import 'package:interesting_places/features/place_list/presentation/bloc/place_list_bloc.dart';
@@ -41,7 +43,7 @@ class PlaceList extends StatelessWidget {
       itemCount: placeList.length,
       separatorBuilder: (context, index) => const SizedBox(height: 24),
       itemBuilder: (context, index) {
-        return ListItem(
+        return _ListItem(
           place: placeList[index],
         );
       },
@@ -49,9 +51,9 @@ class PlaceList extends StatelessWidget {
   }
 }
 
-class ListItem extends StatelessWidget {
+class _ListItem extends StatelessWidget {
   final PlaceEntity place;
-  const ListItem({super.key, required this.place});
+  const _ListItem({super.key, required this.place});
 
   @override
   Widget build(BuildContext context) {
@@ -59,67 +61,72 @@ class ListItem extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 96,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: MemoryImage(place.imageList.first),
+      child: InkWell(
+        onTap: () => context.router.push(PlaceDetailsRoute(place: place)),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 96,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: MemoryImage(place.imageList.first),
+                  ),
                 ),
-              ),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Row(
-                  children: [
-                    const SizedBox(width: 16),
-                    Text(
-                      place.category.name,
-                      style: textTheme.displaySmall
-                          ?.copyWith(color: AppColors.white),
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset('assets/icons/empty_heart.svg'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: ColoredBox(
-              color: AppColors.lightestGrey,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      place.name,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.displayMedium?.copyWith(
-                        color: AppColors.black,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 16),
+                      Text(
+                        place.category.name,
+                        style: textTheme.displaySmall
+                            ?.copyWith(color: AppColors.white),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      place.description,
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodySmall,
-                    ),
-                  ],
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {},
+                        icon: SvgPicture.asset('assets/icons/empty_heart.svg'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              width: double.infinity,
+              child: ColoredBox(
+                color: AppColors.lightestGrey,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        place.name,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.displayMedium?.copyWith(
+                          color: AppColors.black,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        place.description,
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: AppColors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

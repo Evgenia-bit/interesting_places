@@ -62,9 +62,7 @@ class _CategoryGridItem extends StatelessWidget {
                 radius: 32,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: SvgPicture.asset(
-                    'assets/icons/${category.iconFileName}',
-                  ),
+                  child: SvgPicture.asset(category.iconPath),
                 ),
               ),
               if (isActive)
