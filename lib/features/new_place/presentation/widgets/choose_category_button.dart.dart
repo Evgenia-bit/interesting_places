@@ -11,7 +11,7 @@ class ChooseCategoryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final category = context.watch<NewPlaceBloc>().state.category;
-    
+
     return Container(
       height: 48,
       decoration: const BoxDecoration(
@@ -35,9 +35,9 @@ class ChooseCategoryButton extends StatelessWidget {
               category == null ? 'Не выбрано' : category.name,
               style: Theme.of(context).textTheme.displayMedium,
             ),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
-              color: AppColors.black,
+              color: Theme.of(context).colorScheme.tertiary,
               size: 24,
             )
           ],

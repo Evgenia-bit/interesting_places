@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:interesting_places/core/themes/app_colors.dart';
 
 class ImageGallery extends StatefulWidget {
   final List<Uint8List> imageList;
@@ -30,20 +29,23 @@ class _ImageGalleryState extends State<ImageGallery> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
           '$_currentPage/${widget.imageList.length}',
-          style: Theme.of(context).textTheme.headlineSmall,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: theme.colorScheme.tertiary,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () {
               context.router.pop();
             },
-            child: const Icon(
+            child: Icon(
               Icons.close,
-              color: AppColors.green,
+              color: theme.colorScheme.primary,
             ),
           ),
         ],

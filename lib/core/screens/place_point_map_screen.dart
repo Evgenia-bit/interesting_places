@@ -32,13 +32,15 @@ class _PlacePointMapScreenState extends State<PlacePointMapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Местоположение',
-          style: textTheme.headlineSmall,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: theme.colorScheme.tertiary,
+          ),
         ),
         leadingWidth: 80,
         leading: const CancelButton(),
@@ -61,7 +63,7 @@ class _PlacePointMapScreenState extends State<PlacePointMapScreen> {
               style: Theme.of(context)
                   .textTheme
                   .displayMedium
-                  ?.copyWith(color: AppColors.green),
+                  ?.copyWith(color: theme.colorScheme.primary),
             ),
           )
         ],
@@ -76,7 +78,7 @@ class _PlacePointMapScreenState extends State<PlacePointMapScreen> {
               padding: const EdgeInsets.all(16),
               child: Text(
                 'потяните карту чтобы выбрать правильное местоположение',
-                style: textTheme.bodySmall?.copyWith(
+                style: theme.textTheme.bodySmall?.copyWith(
                   color: AppColors.grey,
                 ),
               ),
@@ -87,18 +89,18 @@ class _PlacePointMapScreenState extends State<PlacePointMapScreen> {
               key: _mapKey,
               initialLatitude: _initialLatitude,
               initialLongitude: _initialLongitude,
-              nonRotatedChildren: const [
+              nonRotatedChildren: [
                 Center(
                   child: Text(
                     '+',
                     style: TextStyle(
-                      color: AppColors.black,
+                      color: theme.colorScheme.tertiary,
                       fontSize: 56,
                       fontWeight: FontWeight.w200,
                     ),
                   ),
                 ),
-                CurrentPositionButton(),
+                const CurrentPositionButton(),
               ],
             ),
           ),

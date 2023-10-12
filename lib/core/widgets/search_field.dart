@@ -9,6 +9,7 @@ class SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: TextField(
@@ -29,14 +30,14 @@ class SearchField extends StatelessWidget {
             ),
             icon: SvgPicture.asset(
               'assets/icons/filter.svg',
-              colorFilter: const ColorFilter.mode(
-                AppColors.green,
+              colorFilter: ColorFilter.mode(
+                theme.colorScheme.primary,
                 BlendMode.srcIn,
               ),
             ),
           ),
-          hintStyle: Theme.of(context)
-              .textTheme
+          hintStyle: 
+              theme.textTheme
               .labelMedium
               ?.copyWith(color: AppColors.lightGrey),
           hintText: 'Поиск',

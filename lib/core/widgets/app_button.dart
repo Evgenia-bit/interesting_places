@@ -8,6 +8,8 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return SizedBox(
       width: double.infinity,
       child: TextButton(
@@ -29,9 +31,9 @@ class AppButton extends StatelessWidget {
           backgroundColor: MaterialStateProperty.resolveWith(
             (states) {
               if (states.contains(MaterialState.disabled)) {
-                return AppColors.lightestGrey;
+                return colorScheme.secondary;
               }
-              return AppColors.green;
+              return colorScheme.primary;
             },
           ),
           padding: const MaterialStatePropertyAll(

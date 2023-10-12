@@ -24,6 +24,8 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool _) {
         return [
@@ -33,27 +35,29 @@ class _PlaceListScreenState extends State<PlaceListScreen> {
               expandedHeight: 128.0,
               toolbarHeight: 56,
               pinned: true,
-              backgroundColor: AppColors.white,
+              backgroundColor: theme.colorScheme.background,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
                 expandedTitleScale: 32 / 18,
                 titlePadding: const EdgeInsets.all(16),
                 title: Text(
                   'Список интересных мест',
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: theme.colorScheme.tertiary,
+                  ),
                 ),
               ),
             ),
           ),
           SliverOverlapAbsorber(
             handle: searchFieldHandle,
-            sliver: const SliverAppBar(
+            sliver:  SliverAppBar(
               pinned: true,
               primary: false,
               titleSpacing: 0.0,
               toolbarHeight: 68,
-              backgroundColor: AppColors.white,
-              title: SearchField(),
+              backgroundColor: theme.colorScheme.background,
+              title: const SearchField(),
             ),
           ),
         ];

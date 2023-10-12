@@ -10,6 +10,7 @@ class PlaceListMapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -17,7 +18,9 @@ class PlaceListMapScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         title: Text(
           'Карта',
-          style: Theme.of(context).textTheme.headlineSmall,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: theme.colorScheme.tertiary,
+          ),
         ),
       ),
       body: const Column(
@@ -30,4 +33,3 @@ class PlaceListMapScreen extends StatelessWidget {
     );
   }
 }
-

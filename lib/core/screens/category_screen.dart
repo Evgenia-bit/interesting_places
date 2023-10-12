@@ -26,15 +26,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Категория',
-          style: textTheme.headlineSmall,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: theme.colorScheme.tertiary,
+          ),
         ),
-        leading: const AppBarBackButton()
+        leading: const AppBarBackButton(),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -87,6 +89,8 @@ class _CategoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SizedBox(
       width: double.infinity,
       height: 48,
@@ -105,15 +109,14 @@ class _CategoryListItem extends StatelessWidget {
             children: [
               Text(
                 name,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: AppColors.black),
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.tertiary,
+                ),
               ),
               if (isActive)
-                const Icon(
+                Icon(
                   Icons.check,
-                  color: AppColors.green,
+                  color: theme.colorScheme.primary,
                 ),
             ],
           ),

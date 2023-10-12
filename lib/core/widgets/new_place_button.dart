@@ -8,13 +8,14 @@ class NewPlaceButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        gradient: const LinearGradient(
+        gradient:  LinearGradient(
           colors: [
             AppColors.yellow,
-            AppColors.green,
+            theme.colorScheme.primary,
           ],
         ),
       ),
@@ -38,7 +39,7 @@ class NewPlaceButton extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               'новое место'.toUpperCase(),
-              style: Theme.of(context)
+              style: theme
                   .textTheme
                   .displaySmall
                   ?.copyWith(color: AppColors.white),

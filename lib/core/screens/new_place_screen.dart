@@ -9,13 +9,15 @@ class NewPlaceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Новое место',
-          style: textTheme.headlineSmall,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: theme.colorScheme.tertiary,
+          ),
         ),
         leadingWidth: 80,
         leading: const CancelButton(),

@@ -14,7 +14,7 @@ class FilterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +30,7 @@ class FilterScreen extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .displayMedium
-                  ?.copyWith(color: AppColors.green),
+                  ?.copyWith(color: theme.colorScheme.primary),
             ),
           )
         ],
@@ -42,7 +42,7 @@ class FilterScreen extends StatelessWidget {
           children: [
             Text(
               'Категории'.toUpperCase(),
-              style: textTheme.labelSmall?.copyWith(
+              style: theme.textTheme.labelSmall?.copyWith(
                 color: AppColors.lightGrey,
               ),
             ),

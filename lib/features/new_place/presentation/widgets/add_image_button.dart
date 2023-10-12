@@ -32,10 +32,10 @@ class AddImageButton extends StatelessWidget {
             onPressed: () {
               context.read<AddImageBloc>().add(AddImageEvent());
             },
-            child: const Icon(
+            child: Icon(
               Icons.add,
               size: 40,
-              color: AppColors.green,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ),

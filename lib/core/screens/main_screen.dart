@@ -18,8 +18,10 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return AutoTabsScaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: colorScheme.background,
       routes: const [
         PlaceListRoute(),
         PlaceListMapRoute(),
@@ -34,51 +36,64 @@ class _MainScreenState extends State<MainScreen> {
           child: NavigationBar(
             height: 56,
             indicatorColor: Colors.transparent,
-            backgroundColor: AppColors.white,
+            backgroundColor: colorScheme.background,
             labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
             selectedIndex: tabsRouter.activeIndex,
             onDestinationSelected: tabsRouter.setActiveIndex,
-            destinations: [
-              NavigationDestination(
-                label: 'Full list',
-                icon: SvgPicture.asset(
-                  'assets/icons/list.svg',
-                ),
-                selectedIcon: SvgPicture.asset(
-                  'assets/icons/list_full.svg',
-                ),
+            destinations: const [
+              _NavigationBarItem(
+                iconName: 'list',
+                label: 'List',
               ),
-              NavigationDestination(
+              _NavigationBarItem(
+                iconName: 'map',
                 label: 'Map',
-                icon: SvgPicture.asset(
-                  'assets/icons/map.svg',
-                ),
-                selectedIcon: SvgPicture.asset(
-                  'assets/icons/map_full.svg',
-                ),
               ),
-              NavigationDestination(
+              _NavigationBarItem(
+                iconName: 'favourites',
                 label: 'Favourites',
-                icon: SvgPicture.asset(
-                  'assets/icons/favourites.svg',
-                ),
-                selectedIcon: SvgPicture.asset(
-                  'assets/icons/favourites_full.svg',
-                ),
               ),
-              NavigationDestination(
+              _NavigationBarItem(
+                iconName: 'settings',
                 label: 'Settings',
-                icon: SvgPicture.asset(
-                  'assets/icons/settings.svg',
-                ),
-                selectedIcon: SvgPicture.asset(
-                  'assets/icons/settings_full.svg',
-                ),
               ),
             ],
           ),
         );
       },
+    );
+  }
+}
+
+class _NavigationBarItem extends StatelessWidget {
+  final String label;
+  final String iconName;
+
+  const _NavigationBarItem({
+    super.key,
+    required this.label,
+    required this.iconName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final tertiary = Theme.of(context).colorScheme.tertiary;
+    return NavigationDestination(
+      label: label,
+      icon: SvgPicture.asset(
+        'assets/icons/$iconName.svg',
+        colorFilter: ColorFilter.mode(
+          tertiary,
+          BlendMode.srcIn,
+        ),
+      ),
+      selectedIcon: SvgPicture.asset(
+        'assets/icons/${iconName}_full.svg',
+        colorFilter: ColorFilter.mode(
+          tertiary,
+          BlendMode.srcIn,
+        ),
+      ),
     );
   }
 }
