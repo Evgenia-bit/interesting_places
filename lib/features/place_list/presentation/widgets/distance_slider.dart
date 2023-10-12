@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:interesting_places/core/themes/app_colors.dart';
+import 'package:interesting_places/features/place_list/presentation/bloc/place_list_bloc.dart';
+import 'package:provider/provider.dart';
 
 class DistanceSlider extends StatelessWidget {
   const DistanceSlider({super.key});
@@ -7,6 +9,17 @@ class DistanceSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final (distanceLimit, distanceFilter) = context.select(
+      (PlaceListBloc bloc) => (
+        bloc.state.distanceLimit,
+        bloc.state.distanceFilter,
+      ),
+    );
+
+    if (distanceLimit == null || distanceFilter == null) {
+      return const SizedBox.shrink();
+    }
+
     return Column(
       children: [
         Row(
@@ -19,7 +32,7 @@ class DistanceSlider extends StatelessWidget {
               ),
             ),
             Text(
-              'от 10 до 30 км',
+              'от ${distanceFilter.start.toInt()} до ${distanceFilter.end.toInt()} км',
               style: textTheme.labelMedium?.copyWith(
                 color: AppColors.grey,
               ),
@@ -38,13 +51,13 @@ class DistanceSlider extends StatelessWidget {
             inactiveTickMarkColor: Colors.white,
           ),
           child: RangeSlider(
-            labels: RangeLabels(
-              10.round().toString(),
-              30.round().toString(),
-            ),
-            values: const RangeValues(10, 30),
-            max: 50,
-            onChanged: (v) {},
+            values: distanceFilter,
+            min: distanceLimit.start,
+            max: distanceLimit.end,
+            onChanged: (v) {
+
+              context.read<PlaceListBloc>().add(SetFilterDistance(distance: v));
+            },
           ),
         ),
       ],

@@ -9,11 +9,14 @@ class PlaceEntity {
     required this.category,
     required this.latitude,
     required this.longitude,
+    this.distance,
   });
+
   final List<Uint8List> imageList;
   final String name;
   final String description;
   final Category category;
   final double latitude;
   final double longitude;
+  final double? distance;
 }
