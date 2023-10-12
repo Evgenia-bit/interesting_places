@@ -46,7 +46,7 @@ class SearchField extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: AppColors.lightestGrey,
+          fillColor: theme.colorScheme.secondary,
         ),
       ),
     );

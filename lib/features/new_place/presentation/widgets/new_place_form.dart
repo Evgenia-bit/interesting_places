@@ -43,7 +43,7 @@ class NewPlaceForm extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 _Field(
-                  borderColor: theme.primaryColor,
+                  borderColor: theme.colorScheme.primary,
                   onChanged: (v) {
                     placeBloc.add(UpdatePlaceStateEvent(name: v));
                   },
@@ -174,7 +174,7 @@ class _MapButton extends StatelessWidget {
           child: Text(
             'Указать на карте',
             style: theme.textTheme.displayMedium?.copyWith(
-                  color: theme.primaryColor,
+                  color: theme.colorScheme.primary,
                 ),
           ),
         ),
@@ -268,14 +268,14 @@ class _FieldState extends State<_Field> {
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
-            color: widget.borderColor,
+            color: widget.borderColor.withOpacity(0.4),
             width: 2,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
-            color: widget.borderColor,
+            color: widget.borderColor.withOpacity(0.4),
           ),
         ),
       ),

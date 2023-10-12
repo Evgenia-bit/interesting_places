@@ -95,10 +95,11 @@ class _CategoryListItem extends StatelessWidget {
       width: double.infinity,
       height: 48,
       child: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: AppColors.lightestGrey,
+              width: 0.8,
+              color: AppColors.lightGrey.withOpacity(0.1),
             ),
           ),
         ),
@@ -125,3 +126,4 @@ class _CategoryListItem extends StatelessWidget {
     );
   }
 }
+

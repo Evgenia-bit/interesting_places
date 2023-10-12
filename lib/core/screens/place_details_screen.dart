@@ -16,6 +16,7 @@ class PlaceDetailsScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +169,7 @@ class _BackButton extends StatelessWidget {
         padding: const MaterialStatePropertyAll(
           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         ),
-        // backgroundColor: const MaterialStatePropertyAll(colorScheme.background),
+        backgroundColor: MaterialStatePropertyAll(colorScheme.background),
         shape: MaterialStatePropertyAll(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),

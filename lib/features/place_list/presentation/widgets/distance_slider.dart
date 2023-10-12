@@ -44,7 +44,7 @@ class DistanceSlider extends StatelessWidget {
           data: SliderTheme.of(context).copyWith(
             trackHeight: 2,
             overlayShape: SliderComponentShape.noOverlay,
-            activeTrackColor: theme.primaryColor,
+            activeTrackColor: theme.colorScheme.primary,
             inactiveTrackColor: AppColors.lightGrey,
             thumbShape: const RoundSliderThumbShape(elevation: 10),
             thumbColor: AppColors.white,

@@ -31,7 +31,9 @@ class _ImageGalleryState extends State<ImageGallery> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           '$_currentPage/${widget.imageList.length}',
           style: theme.textTheme.headlineSmall?.copyWith(

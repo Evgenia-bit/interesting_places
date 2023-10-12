@@ -17,6 +17,7 @@ class FilterScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         automaticallyImplyLeading: true,
         leading: const AppBarBackButton(),

@@ -71,8 +71,8 @@ class _PlacePointMapScreenState extends State<PlacePointMapScreen> {
       body: Column(
         children: [
           DecoratedBox(
-            decoration: const BoxDecoration(
-              color: AppColors.lightestGrey,
+            decoration:  BoxDecoration(
+              color: theme.colorScheme.secondary,
             ),
             child: Padding(
               padding: const EdgeInsets.all(16),

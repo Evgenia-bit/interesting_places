@@ -28,17 +28,17 @@ const _inputDecorationTheme = InputDecorationTheme(
 
 const _lightColorScheme = ColorScheme.light(
   background: AppColors.white,
-  primary: AppColorsLight.green,
-  secondary: AppColors.lightGrey,
-  tertiary: AppColorsLight.black,
+  primary: Color.fromRGBO(76, 175, 80, 1),
+  secondary: AppColors.lightestGrey,
+  tertiary: Color.fromRGBO(37, 40, 73, 1),
   surface: AppColors.white,
   error: Color.fromRGBO(239, 67, 67, 0.4),
 );
 
 const _darkColorScheme = ColorScheme.dark(
-  background: AppColorsDark.black,
-  primary: AppColorsDark.green,
-  secondary: AppColorsDark.darkBlack,
+  background: Color.fromRGBO(33, 34, 44, 1),
+  primary: Color.fromRGBO(106, 218, 111, 1),
+  secondary: Color.fromRGBO(26, 26, 32, 1),
   tertiary: AppColors.white,
   surface: Color.fromRGBO(59, 62, 91, 1),
   error: Color.fromRGBO(207, 42, 42, 0.4),

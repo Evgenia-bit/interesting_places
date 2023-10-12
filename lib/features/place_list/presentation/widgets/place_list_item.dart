@@ -6,17 +6,19 @@ import 'package:interesting_places/features/place_list/domain/entity/place_entit
 class PlaceListItem extends StatelessWidget {
   final PlaceEntity place;
   final bool withDescription;
+  final Color backgroundColor;
   const PlaceListItem({
     super.key,
     required this.place,
     required this.withDescription,
+    required this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return  Column(
+    return Column(
       children: [
         SizedBox(
           height: 96,
@@ -50,7 +52,7 @@ class PlaceListItem extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: ColoredBox(
-            color: theme.colorScheme.surface,
+            color: backgroundColor,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(

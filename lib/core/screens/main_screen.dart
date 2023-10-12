@@ -30,8 +30,10 @@ class _MainScreenState extends State<MainScreen> {
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return Container(
-          decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: AppColors.lightestGrey)),
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: AppColors.lightGrey.withOpacity(0.1)),
+            ),
           ),
           child: NavigationBar(
             height: 56,

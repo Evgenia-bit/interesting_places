@@ -12,6 +12,7 @@ class NewPlaceScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         title: Text(
           'Новое место',

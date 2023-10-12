@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:interesting_places/core/data/models/category.dart';
-import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/features/place_list/presentation/bloc/place_list_bloc.dart';
 import 'package:provider/provider.dart';
 

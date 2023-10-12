@@ -71,6 +71,7 @@ class _PlaceListMapState extends State<PlaceListMap> {
                       child: PlaceListItem(
                         place: activePlace!,
                         withDescription: false,
+                        backgroundColor: colorScheme.surface,
                       ),
                     ),
                   ),
@@ -117,7 +118,7 @@ class _PlaceListMapState extends State<PlaceListMap> {
 }
 
 Marker? _currentPositionMarker(BuildContext context) {
-  final primaryColor = Theme.of(context).primaryColor;
+  final primaryColor = Theme.of(context).colorScheme.primary;
   final position = context.watch<GetCurrentPositionBloc>().state;
 
   if (position.latitude != null || position.longitude != null) {
