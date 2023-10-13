@@ -8,7 +8,7 @@ class DistanceSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
     final (distanceLimit, distanceFilter) = context.select(
       (PlaceListBloc bloc) => (
         bloc.state.distanceLimit,
@@ -27,13 +27,13 @@ class DistanceSlider extends StatelessWidget {
           children: [
             Text(
               'Расстояние',
-              style: textTheme.labelMedium?.copyWith(
-                color: AppColors.black,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.tertiary,
               ),
             ),
             Text(
               'от ${distanceFilter.start.toInt()} до ${distanceFilter.end.toInt()} км',
-              style: textTheme.labelMedium?.copyWith(
+              style: theme.textTheme.labelMedium?.copyWith(
                 color: AppColors.grey,
               ),
             ),
@@ -44,7 +44,7 @@ class DistanceSlider extends StatelessWidget {
           data: SliderTheme.of(context).copyWith(
             trackHeight: 2,
             overlayShape: SliderComponentShape.noOverlay,
-            activeTrackColor: AppColors.green,
+            activeTrackColor: theme.colorScheme.primary,
             inactiveTrackColor: AppColors.lightGrey,
             thumbShape: const RoundSliderThumbShape(elevation: 10),
             thumbColor: AppColors.white,
@@ -55,7 +55,6 @@ class DistanceSlider extends StatelessWidget {
             min: distanceLimit.start,
             max: distanceLimit.end,
             onChanged: (v) {
-
               context.read<PlaceListBloc>().add(SetFilterDistance(distance: v));
             },
           ),

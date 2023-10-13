@@ -63,6 +63,7 @@ class _ListItem extends StatelessWidget {
         child: PlaceListItem(
           place: place,
           withDescription: true,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
         ),
       ),
     );

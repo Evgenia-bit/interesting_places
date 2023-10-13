@@ -14,7 +14,8 @@ class NewPlaceForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final labelSmall = Theme.of(context).textTheme.labelSmall?.copyWith(
+    final theme = Theme.of(context);
+    final labelSmall = theme.textTheme.labelSmall?.copyWith(
           color: AppColors.lightGrey,
         );
     final placeBloc = context.read<NewPlaceBloc>();
@@ -42,7 +43,7 @@ class NewPlaceForm extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 _Field(
-                  borderColor: AppColors.green,
+                  borderColor: theme.colorScheme.primary,
                   onChanged: (v) {
                     placeBloc.add(UpdatePlaceStateEvent(name: v));
                   },
@@ -82,9 +83,10 @@ class _CoordinatesRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final labelSmall = Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: AppColors.lightGrey,
-        );
+    final theme = Theme.of(context);
+    final labelSmall = theme.textTheme.labelSmall?.copyWith(
+      color: AppColors.lightGrey,
+    );
     final placeBloc = context.read<NewPlaceBloc>();
 
     final (latitude, longitude, isValidLatitude, isValidLongitude) =
@@ -110,8 +112,8 @@ class _CoordinatesRow extends StatelessWidget {
               const SizedBox(height: 12),
               _Field(
                 borderColor: latitude.isEmpty || isValidLatitude
-                    ? AppColors.green
-                    : AppColors.red,
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.error,
                 onChanged: (v) {
                   placeBloc.add(UpdatePlaceStateEvent(latitude: v));
                 },
@@ -133,8 +135,8 @@ class _CoordinatesRow extends StatelessWidget {
               const SizedBox(height: 12),
               _Field(
                 borderColor: longitude.isEmpty || isValidLongitude
-                    ? AppColors.green
-                    : AppColors.red,
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.error,
                 onChanged: (v) {
                   placeBloc.add(UpdatePlaceStateEvent(longitude: v));
                 },
@@ -154,6 +156,8 @@ class _MapButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SizedBox(
       width: double.infinity,
       child: TextButton(
@@ -169,8 +173,8 @@ class _MapButton extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Text(
             'Указать на карте',
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  color: AppColors.green,
+            style: theme.textTheme.displayMedium?.copyWith(
+                  color: theme.colorScheme.primary,
                 ),
           ),
         ),
@@ -264,14 +268,14 @@ class _FieldState extends State<_Field> {
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
-            color: widget.borderColor,
+            color: widget.borderColor.withOpacity(0.4),
             width: 2,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
-            color: widget.borderColor,
+            color: widget.borderColor.withOpacity(0.4),
           ),
         ),
       ),

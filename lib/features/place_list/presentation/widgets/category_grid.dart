@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:interesting_places/core/data/models/category.dart';
-import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/features/place_list/presentation/bloc/place_list_bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +46,7 @@ class _CategoryGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextButton(
       style: const ButtonStyle(
         padding: MaterialStatePropertyAll(EdgeInsets.zero),
@@ -58,7 +58,7 @@ class _CategoryGridItem extends StatelessWidget {
           Stack(
             children: [
               CircleAvatar(
-                backgroundColor: AppColors.lightestGreen,
+                backgroundColor: colorScheme.primary.withOpacity(0.16),
                 radius: 32,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -66,12 +66,12 @@ class _CategoryGridItem extends StatelessWidget {
                 ),
               ),
               if (isActive)
-                const Positioned(
+                Positioned(
                   bottom: 0,
                   right: 0,
                   child: Icon(
                     Icons.check_circle,
-                    color: AppColors.black,
+                    color: colorScheme.tertiary,
                     size: 16,
                   ),
                 )
@@ -83,7 +83,7 @@ class _CategoryGridItem extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .labelSmall
-                ?.copyWith(color: AppColors.black),
+                ?.copyWith(color: colorScheme.tertiary),
           )
         ],
       ),

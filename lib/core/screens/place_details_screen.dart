@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/core/widgets/image_gallery.dart';
 import 'package:interesting_places/features/place_list/domain/entity/place_entity.dart';
 
@@ -13,10 +12,11 @@ class PlaceDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.background,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,20 +47,22 @@ class PlaceDetailsScreen extends StatelessWidget {
                 children: [
                   Text(
                     place.name,
-                    style: textTheme.headlineMedium,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      color: theme.colorScheme.tertiary,
+                    ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     place.category.name,
-                    style: textTheme.displaySmall?.copyWith(
-                      color: AppColors.black,
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      color: theme.colorScheme.tertiary,
                     ),
                   ),
                   const SizedBox(height: 24),
                   Text(
                     place.description,
-                    style: textTheme.bodySmall?.copyWith(
-                      color: AppColors.black,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.tertiary,
                     ),
                   ),
                 ],
@@ -141,8 +143,9 @@ class _ImageCarouselState extends State<ImageCarousel> {
             width: _pageIndicatorWidth,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                  color: AppColors.black,
-                  borderRadius: BorderRadius.circular(10)),
+                color: Theme.of(context).colorScheme.tertiary,
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
         ),
@@ -157,6 +160,7 @@ class _BackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return FilledButton(
       onPressed: () => context.router.pop(),
       style: ButtonStyle(
@@ -165,17 +169,17 @@ class _BackButton extends StatelessWidget {
         padding: const MaterialStatePropertyAll(
           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         ),
-        backgroundColor: const MaterialStatePropertyAll(AppColors.white),
+        backgroundColor: MaterialStatePropertyAll(colorScheme.background),
         shape: MaterialStatePropertyAll(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
       ),
-      child: const Icon(
+      child: Icon(
         Icons.arrow_back_ios,
         size: 15,
-        color: AppColors.black,
+        color: colorScheme.tertiary,
       ),
     );
   }

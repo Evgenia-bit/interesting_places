@@ -89,6 +89,7 @@ class MapViewState extends State<MapView> {
             nonRotatedChildren: widget.nonRotatedChildren ?? [],
             children: [
               TileLayer(
+                backgroundColor: Theme.of(context).colorScheme.background,
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
               ),
               if (widget.markers != null)

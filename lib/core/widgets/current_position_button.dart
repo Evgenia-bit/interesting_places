@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:interesting_places/core/themes/app_colors.dart';
 import 'package:interesting_places/features/get_current_position/presentation/bloc/get_current_position_bloc.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -9,6 +8,7 @@ class CurrentPositionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Align(
       alignment: Alignment.bottomRight,
       child: Padding(
@@ -18,7 +18,7 @@ class CurrentPositionButton extends StatelessWidget {
           width: 48,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: colorScheme.surface,
               borderRadius: BorderRadius.circular(50),
             ),
             child: IconButton(
@@ -30,9 +30,9 @@ class CurrentPositionButton extends StatelessWidget {
               iconSize: 24,
               icon: Transform.rotate(
                 angle: pi / 4,
-                child: const Icon(
+                child:  Icon(
                   Icons.navigation,
-                  color: AppColors.black,
+                  color: colorScheme.tertiary,
                 ),
               ),
             ),

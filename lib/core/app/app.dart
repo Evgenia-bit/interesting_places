@@ -22,7 +22,8 @@ class App extends StatelessWidget {
         PlaceListModule(),
       ],
       child: MaterialApp.router(
-        theme: theme,
+        theme: lightTheme,
+        darkTheme: darkTheme,
         routerConfig: _appRouter.config(),
       ),
     );

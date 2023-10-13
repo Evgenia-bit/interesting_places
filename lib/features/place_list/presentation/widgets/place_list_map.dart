@@ -23,11 +23,11 @@ class _PlaceListMapState extends State<PlaceListMap> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final filteredPlaces = context.watch<PlaceListBloc>().state.filteredPlaces;
-    final positionState = context.watch<GetCurrentPositionBloc>().state;
-    final currentPositionMarker = _currentPositionMarker(positionState);
+    final currentPositionMarker = _currentPositionMarker(context);
     final List<Widget>? notRotatedChildren;
-    
+
     if (activePlace == null) {
       notRotatedChildren = const [
         Align(
@@ -71,6 +71,7 @@ class _PlaceListMapState extends State<PlaceListMap> {
                       child: PlaceListItem(
                         place: activePlace!,
                         withDescription: false,
+                        backgroundColor: colorScheme.surface,
                       ),
                     ),
                   ),
@@ -103,7 +104,8 @@ class _PlaceListMapState extends State<PlaceListMap> {
                     },
                     icon: Icon(
                       Icons.circle,
-                      color: isActive ? AppColors.green : AppColors.black,
+                      color:
+                          isActive ? colorScheme.primary : colorScheme.tertiary,
                     ),
                   );
                 },
@@ -115,7 +117,10 @@ class _PlaceListMapState extends State<PlaceListMap> {
   }
 }
 
-Marker? _currentPositionMarker(GetCurrentPositionState position) {
+Marker? _currentPositionMarker(BuildContext context) {
+  final primaryColor = Theme.of(context).colorScheme.primary;
+  final position = context.watch<GetCurrentPositionBloc>().state;
+
   if (position.latitude != null || position.longitude != null) {
     return Marker(
       point: LatLng(position.latitude!, position.longitude!),
@@ -124,10 +129,10 @@ Marker? _currentPositionMarker(GetCurrentPositionState position) {
       builder: (context) {
         return CircleAvatar(
           radius: 52,
-          backgroundColor: AppColors.green.withOpacity(0.12),
+          backgroundColor: primaryColor.withOpacity(0.12),
           child: CircleAvatar(
             radius: 32,
-            backgroundColor: AppColors.green.withOpacity(0.24),
+            backgroundColor: primaryColor.withOpacity(0.24),
             child: SizedBox(
               height: 24,
               width: 24,
@@ -135,10 +140,10 @@ Marker? _currentPositionMarker(GetCurrentPositionState position) {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   border: Border.all(color: AppColors.white, width: 2),
-                  gradient: const LinearGradient(
+                  gradient: LinearGradient(
                     colors: [
                       AppColors.yellow,
-                      AppColors.green,
+                      primaryColor,
                     ],
                   ),
                 ),
@@ -149,5 +154,6 @@ Marker? _currentPositionMarker(GetCurrentPositionState position) {
       },
     );
   }
+
   return null;
 }
